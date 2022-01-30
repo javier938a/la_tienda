@@ -6,6 +6,7 @@
 {% block extra-css %}
       <link href="{% static 'assets/css/jquery-ui/jquery-ui.css' %}" rel="stylesheet">
       <link href="{% static 'assets/css/jquery-ui/jquery-ui.css' %}" rel="stylesheet">
+      <link href="{% static 'assets/css/select2/select2.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block contenido %}
@@ -14,8 +15,8 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'store:user' %}">Listar Usuarios</a></li>
-          <li class="breadcrumb-item active">Agregar usuario</li>
+          <li class="breadcrumb-item"><a href="{% url 'store:list_sucursal' %}">Listar Sucursal</a></li>
+          <li class="breadcrumb-item active">Agregar Sucursal</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -54,5 +55,6 @@
 {% block extra-script %}
     <script src="{% static 'assets/js/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'assets/js/jquery-mask/jquery.mask.js' %}"></script>
+    <script src="{% static 'assets/js/select2/select2.js' %}"></script>
     <script src="{% static 'assets/js/proces_usuario/crear_usuario.js' %}"></script>
 {% endblock %}
