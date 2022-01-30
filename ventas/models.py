@@ -57,7 +57,7 @@ class Presentacion(models.Model):
         return "%s"%self.presentacion
 
 
-class StockSucursal(models.Model):
+class ProductoStockSucursal(models.Model):
     sucursal=models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True)
     producto=models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
     presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)
@@ -68,7 +68,7 @@ class StockSucursal(models.Model):
     def __str__(self) -> str:
         return "%s -> %s"%(self.sucursal, self.producto)
 
-class StockGloval(models.Model):
+class ProductoStockGloval(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
     presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)
     cantidad=models.IntegerField(help_text="Ingrese la cantidad del producto global")

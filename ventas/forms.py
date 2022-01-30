@@ -4,7 +4,7 @@ from pyexpat import model
 from django import forms
 from django.contrib.admin import widgets as wd
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Sucursal, Categoria, Producto
+from .models import User, Sucursal, Categoria, Producto, Presentacion
 
 class UserForm(UserCreationForm):
     class Meta:
@@ -50,4 +50,12 @@ class ProductoForm(forms.ModelForm):
             'descripcion':'Descripcion del producto',
             'usuario':'Usuario',
             'categoria':'Categoria del producto'
+        }
+    
+class PresentacionForm(forms.ModelForm):
+    class Meta:
+        model=Presentacion
+        fields=('presentacion',)
+        labels={
+            'presentacion':'Presentacion'
         }

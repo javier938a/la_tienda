@@ -4,7 +4,8 @@ from .views import Index
 from .views import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario
 from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
-from .views import ListarProductos, CrearProducto
+from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto
+from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
 
 
 app_name="store"
@@ -23,5 +24,11 @@ urlpatterns = [
     path('categorias_producto/editar_categoria_producto/<int:pk>', EditarCategoriaProducto.as_view(), name="edit_cate"),
     path('categorias_producto/eliminar_categoria_producto/<int:pk>', EliminarCategoriaProducto.as_view(), name="del_cate"),
     path('productos/', ListarProductos.as_view(), name="list_prod"),
-    path('productos/crear_producto', CrearProducto.as_view(), name="crear_prod")
+    path('productos/crear_producto', CrearProducto.as_view(), name="crear_prod"),
+    path('productos/editar_producto/<int:pk>', EditarProducto.as_view(), name="editar_prod"),
+    path('productos/eliminar_producto/<int:pk>', EliminarProducto.as_view(), name="del_prod"),
+    path('presentaciones/', ListarPresentacion.as_view(), name="list_pre"),
+    path('presentaciones/crear_presentacion', CrearPresentacion.as_view(), name="crear_pre"),
+    path('presentaciones/editar_presentacion/<int:pk>', EditarPresentacion.as_view(), name="edit_pre"),
+    path('presentacion/eliminar_presentacion/<int:pk>', EliminarPresentacion.as_view(), name="del_pre")
 ]

@@ -2,12 +2,12 @@
 
 {% block contenido %}
     <div class="pagetitle">
-      <h1>Eliminar Categoria</h1>
+      <h1>Eliminar presentacion</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'store:list_cate' %}">Listar Categoria</a></li>
-          <li class="breadcrumb-item active">Eliminar Categoria</li>
+          <li class="breadcrumb-item"><a href="{% url 'store:list_cate' %}">Listar Presentaciones</a></li>
+          <li class="breadcrumb-item active">Eliminar Presentaciones</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -24,13 +24,13 @@
               <form method="POST">
                     {% csrf_token %}
                     <div class="alert alert-danger" role="alert">
-                    Esta seguro de eliminar a {{ cate.categoria }}
+                    Esta seguro de eliminar a {{ pre.presentacion }}
                     no se podra recuperar despues..
                     </div>
 
                 <div class="row mb-3 float-end">
                   <div class="col-sm-12">
-                    <a class="btn btn-primary" href="{% url 'store:list_cate' %}">No</a>
+                    <a class="btn btn-primary" href="{% url 'store:list_pre' %}">No</a>
                     <button type="submit" class="btn btn-danger">Eliminar</button>
                   </div>
                 </div>

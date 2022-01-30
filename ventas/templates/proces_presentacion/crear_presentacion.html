@@ -2,19 +2,15 @@
 
 {% load crispy_forms_tags %}
 
-{% load static %}
-{% block extra-css %}
-      <link href="{% static 'assets/css/jquery-ui/jquery-ui.css' %}" rel="stylesheet">
-{% endblock %}
 
 {% block contenido %}
     <div class="pagetitle">
-      <h1>Crear Categoria</h1>
+      <h1>Crear Presentacion</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'store:list_cate' %}">Listar Categoria</a></li>
-          <li class="breadcrumb-item active">Agregar Categoria</li>
+          <li class="breadcrumb-item"><a href="{% url 'store:list_pre' %}">Listar Presentaciones</a></li>
+          <li class="breadcrumb-item active">Agregar Presentacion</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -49,8 +45,3 @@
     </section>
 {% endblock %}
 
-{% load static %}
-{% block extra-script %}
-    <script src="{% static 'assets/js/jquery-ui/jquery-ui.js' %}"></script>
-    <script src="{% static 'assets/js/jquery-mask/jquery.mask.js' %}"></script>
-{% endblock %}
