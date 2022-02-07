@@ -412,9 +412,27 @@
               <span>Presentaciones</span>
             </a>
           </li><!-- End Register Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'store:list_inv' %}">
+              <i class="bi bi-card-list"></i>
+              <span>Inventario</span>
+            </a>
+          </li><!-- End Register Page Nav -->
         </ul>
       </li><!-- End Forms Nav -->
-
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#ventas-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Administrar Ventas</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="ventas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="#">
+              <i class="bi bi-card-list"></i>
+              <span>Ventas</span>
+            </a>
+          </li><!-- End Register Page Nav -->
+        </ul>
+      </li><!-- End Forms Nav -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>

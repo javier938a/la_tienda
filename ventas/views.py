@@ -5,6 +5,8 @@ from ventas.proces_sucursal.crud_sucursal import ListarSucursal, CrearSucursal, 
 from ventas.proces_categoria_producto.crud_categoria import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
 from ventas.proces_producto.crud_producto import ListarProductos, CrearProducto,  EditarProducto, EliminarProducto
 from ventas.proces_presentacion.crud_presentacion import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
+from ventas.proces_inventario.crud_inventario import ListarInventario,  CrearInventario, EditarInventario, EliminarInventario, obtener_productos_autocomplete
+from ventas.proces_inventario.crud_inventario import agregar_producto_detalle
 # Create your views here.
 
 class Index(TemplateView):
