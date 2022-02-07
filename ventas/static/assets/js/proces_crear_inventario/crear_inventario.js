@@ -153,11 +153,140 @@ $(document).ready(function(){
         $("#total").text('$'+redondear(total));//mostrando el total
     }
 
-
+    //funcion para redondear cantidades a dos digitos
     function redondear(num) {
         var m = Number((Math.abs(num) * 100).toPrecision(15));
         return Math.round(m) / 100 * Math.sign(num);
     }
+
+    //guardar el inventario
+    $("#guardar").click(function(evt){
+        let tabla_prod=$("#table-productos tr");
+        let resultado=validar_lista_productos(tabla_prod);
+        if(resultado){//si resultado es true hay que guardar todos los productos 
+            detalles_productos=obtener_productos(tabla_prod);//obteniendo los detalles de productos
+            productos_json=JSON.stringify(detalles_productos);//convirtiendo los productos a json
+            console.log(detalles_productos);
+            descripcion=$("#descripcion").val();//obteniendo la descripcion
+            id_sucursal=$("#sucursal").val();//obteniendo la sucursal
+            total=$("#total").text().replace('$','');
+            const csrftoken=getCookie('csrftoken');
+            if(descripcion.length>0 && id_sucursal.length>0){//si hay una descipcion ingresado y un id_sucursal seleccionado se procede a enviar
+                datos_inventario={
+                    csrfmiddlewaretoken:csrftoken,
+                    'descripcion':descripcion,
+                    'id_sucursal':id_sucursal,
+                    'total':total,
+                    'productos_json':productos_json
+                }
+                url=$("#url_guardar_datos_inventario").val();
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    data:datos_inventario,
+                    dataType:'json',
+                    success:function(data){
+                        resultado=data.res;
+                        if(resultado==true){
+                            toastr['success']("Inventario cargado exitosamente");
+                            setTimeout(function(){
+                                url_listar_inv=$("#url_list_inv").val();
+                                window.open(url_listar_inv);
+                            }, 1500)
+                        }
+                    }            
+                });
+
+            }else{
+                toastr['error']("Dede de ingresar una descripcion y seleccionar un sucursal")
+            }
+            
+        }
+    });
     
+    function validar_lista_productos(tabla){
+        let sel_select=0;
+        let cant_ing=0;
+        let cost_ing=0;
+        let pre_ing=0;
+        let res_sel=false;
+        let res_cant=false;
+        let res_cost=false;
+        let res_pre=false;
+        let resultado=false;
+        tabla.each(function(){
+            let sel=$(this).find('.select').val();
+            let cant=$(this).find('.cant').val();
+            let cost=$(this).find('.cost').val();
+            let pre=$(this).find('.pre').val();
+            let tot=$(this).find('.tot').val();
+            if(sel===''){
+                sel_select++;
+            }else{
+                sel_select=0;
+            }
+            if(cant===''){
+                cant_ing++;
+            }else{
+                cant_ing=0;
+            }
+            if(cost===''){
+                cost_ing++;
+            }else{
+                cost_ing=0;
+            }
+            if(pre===''){
+                pre_ing++;
+            }else{
+                pre_ing=0;
+            }
+ 
+        });
+        if(sel_select>0){//verifico si no se han seleccionado las presentaciones
+            toastr["error"]("No ha terminado de seleccionar todas las precentaciones de los productos ingresados");
+            res_sel=false;//si es cierto res_sel pasa a false
+        }else if(sel_select===0){//de lo contrario si esta lleno o se ha seleccionado 1 presentacion
+            res_sel=true;//res_sel es igual a true y lo mismo va para todos los abajo
+        }
+        if(cant_ing>0){
+            toastr["error"]("No ha terminado de Ingresar todas las cantidades de los productos ingresados");  
+            res_cant=false;          
+        }else if(cant_ing===0){
+            res_cant=true;
+        }
+        if(cost_ing>0){
+            toastr["error"]("No ha terminado de Ingresar todas los costos de los productos ingresados");
+            res_cost=false;
+        }else if(cost_ing===0){
+            res_cost=true;
+        }
+        if(pre_ing>0){
+            toastr["error"]("No ha terminado el precio de venta de todos los productos");
+            res_pre=false;
+        }else if(pre_ing===0){
+            res_pre=true;
+        }
+        if(res_sel && res_cant && res_cost && res_pre){//si todos fueron true entonces todo esta lleno y esta correcto por lo tanto esta validado
+            resultado=true;
+        }
+
+        return resultado;
+    }
+
+
+    function obtener_productos(tabla){//FUNCION QUE RECORRE TODA LA TABL Y RETORNA TODOS LOS PRODUCTOS A GUARDAR
+       let datos=[];
+       tabla.each(function(){
+            let idproducto=$(this).find('.idprod').val();
+            let id_presetacion=$(this).find('.select').val();
+            let cantidad=$(this).find('.cant').val();
+            let costo=$(this).find('.cant').val();
+            let precio=$(this).find('.pre').val();
+            let total=$(this).find('.tot').val().replace("$",'');
+            fila={'id_producto':idproducto, 'id_presentacion':id_presetacion, 'cantidad':cantidad, 'costo':costo, 'precio':precio, 'total':total};
+            datos.push(fila);       
+        });
+       return datos;
+    }
 
 });

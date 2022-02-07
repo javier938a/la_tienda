@@ -7,6 +7,7 @@ from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCateg
 from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto
 from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
 from .views import ListarInventario, CrearInventario, EditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
+from .views import guardar_datos_inventario
 
 
 app_name="store"
@@ -37,5 +38,6 @@ urlpatterns = [
     path('inventario/editar_inventario/<int:pk>', EditarInventario.as_view(), name="edit_inv"),
     path('inventario/eliminar_inventario/<int:pk>', EliminarInventario.as_view(), name="del_inv"),
     path('inventario/auto_prod_list', obtener_productos_autocomplete, name='auto_prod_list'),
-    path('inventario/agregar_producto', agregar_producto_detalle, name="add_prod_detalle")
+    path('inventario/agregar_producto', agregar_producto_detalle, name="add_prod_detalle"),
+    path('inventario/guardar_detalles_inventario', guardar_datos_inventario, name='guardar_dato_inventario')
 ]

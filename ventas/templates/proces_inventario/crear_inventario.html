@@ -4,6 +4,7 @@
 {% block extra-css %}
       <link href="{% static 'assets/css/jquery-ui/jquery-ui.css' %}" rel="stylesheet">
       <link href="{% static 'assets/css/select2/select2.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'assets/css/toastr/toastr.css' %}">
 {% endblock %}
 
 {% block contenido %}
@@ -38,6 +39,8 @@
                 <input class="form-control" type="text" name="producto" id="producto" placeholder="Escriba un producto" value="">
                 <input type="hidden" name="url_auto_prod" id="url_auto_prod" value="{% url 'store:auto_prod_list' %}">
                 <input type="hidden" name="url_add_prod_detalle" id="url_add_prod_detalle" value="{% url 'store:add_prod_detalle' %}">
+                <input type="hidden" name="url_guardar_datos_inventario" id="url_guardar_datos_inventario" value="{% url 'store:guardar_dato_inventario' %}">
+                <input type="hidden" name="url_list_inv" id="url_list_inv" value="{% url 'store:list_inv' %}">
               </div>
             </div>
           </div>
@@ -47,7 +50,7 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <button id="guardar" class="btn btn-success form-control">Guardar</button>
+                <button id="guardar" type="button" class="btn btn-success form-control">Guardar</button>
               </div>              
             </div>
             <div class="col-md-1">
@@ -109,5 +112,7 @@
     <script src="{% static 'assets/js/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'assets/js/jquery-mask/jquery.mask.js' %}"></script>
     <script src="{% static 'assets/js/select2/select2.js' %}"></script>
+    <script src="{% static 'assets/js/toastr/toastr.min.js' %}"></script>
     <script src="{% static 'assets/js/proces_crear_inventario/crear_inventario.js' %}"></script>
+    
 {% endblock %}

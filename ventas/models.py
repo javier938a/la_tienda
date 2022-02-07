@@ -42,8 +42,10 @@ class Categoria(models.Model):
         return "%s"%str(self.categoria) 
 
 class Producto(models.Model):
+    codigo_barra=models.CharField(max_length=100, help_text="Ingrese el codigo de barra del producto", null=True)
     nombre_producto=models.CharField(max_length=100, help_text="Ingrese el nombre del producto")
     descripcion=models.CharField(max_length=100, help_text="Ingrese la descripcion del producto")
+    fecha_vencimiento=models.DateField(help_text="Ingrese la fecha de vencimiento", null=True, blank=True)
     usuario=models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     categoria=models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
 
@@ -77,7 +79,7 @@ class ProductoStockSucursal(models.Model):
 
 
     def __str__(self) -> str:
-        return "%s -> %s"%(self.sucursal, self.producto)
+        return "%s -> %s"%(self.inventario_productos, self.producto)
 
         
 class FacturaVentas(models.Model):
