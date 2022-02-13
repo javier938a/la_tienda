@@ -4,6 +4,7 @@ from django.urls import path
 
 from .views import Index
 from .views import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario
+from .views import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
 from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
 from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto
@@ -20,6 +21,10 @@ urlpatterns = [
     path('usuarios/crear_usuarios', CrearUsuario.as_view(), name="crear_user"),
     path('usuarios/editar_usuario/<int:pk>', EditarUsuario.as_view(), name="editar_user"),
     path('usuarios/eliminar_usuario/<int:pk>', EliminarUsuario.as_view(), name="del_user"),
+    path('proveedores/', ListarProveedor.as_view(), name="list_prove"),
+    path('proveedores/crear_proveedor', CrearProveedor.as_view(), name="crear_prove"),
+    path('proveedores/editar_proveedor/<int:pk>', EditarProveedor.as_view(), name="edit_prove"),
+    path('proveedores/eliminar_proveedor/<int:pk>', EliminarProveedor.as_view(), name="del_prove"),
     path('sucursales/', ListarSucursal.as_view(), name="list_sucursal"),
     path('sucursales/crear_sucursal', CrearSucursal.as_view(), name="crear_sucursal"),
     path('sucursales/editar_sucursal/<int:pk>', EditarSucursal.as_view(), name="edit_sucursal"),

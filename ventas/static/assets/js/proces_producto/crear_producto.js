@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $("#id_proveedor").select2();
     $("#id_categoria").select2();
     $("#id_fecha_vencimiento").datepicker({
         dateFormat:'yy-mm-dd',

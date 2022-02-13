@@ -34,6 +34,17 @@ class User(AbstractUser):
     def natural_key(self):
         return (self.username)
 
+class Proveedor(models.Model):
+    nombre=models.CharField(help_text="Ingrese el nombre del proveedor", max_length=100, null=True)
+    empresa=models.CharField(help_text="Ingrese el nombre de la empresa", max_length=100, null=True)
+    direccion=models.TextField(help_text="Ingrese la direccion del proveedor", null=True)
+    celular=models.CharField(help_text="Ingrese el Celular del proveedor", max_length=11, null=True)
+    telefono=models.CharField(help_text="Ingrese el telefono del proveedor", max_length=11, null=True)
+
+    def __str__(self):
+        return "%s %s"%(self.nombre, self.empresa)
+    
+
 class Categoria(models.Model):
     categoria=models.CharField(max_length=50, help_text="Ingrese la categoria del producto", null=True)
 
@@ -41,6 +52,7 @@ class Categoria(models.Model):
         return "%s"%str(self.categoria) 
 
 class Producto(models.Model):
+    proveedor=models.ForeignKey(Proveedor, help_text="Seleccione el proveedor", on_delete=models.SET_NULL, null=True)
     codigo_barra=models.CharField(max_length=100, help_text="Ingrese el codigo de barra del producto", null=True)
     nombre_producto=models.CharField(max_length=100, help_text="Ingrese el nombre del producto")
     descripcion=models.CharField(max_length=100, help_text="Ingrese la descripcion del producto")
