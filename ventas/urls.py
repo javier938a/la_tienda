@@ -1,13 +1,16 @@
 from unicodedata import name
 from django.urls import path
+
+
 from .views import Index
 from .views import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario
 from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
 from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto
 from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
-from .views import ListarInventario, CrearInventario, EditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
-from .views import guardar_datos_inventario
+from .views import ListarInventario, ViewCrearInventario, ViewEditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
+from .views import guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle, DetalleInventario
+from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
 
 
 app_name="store"
@@ -34,10 +37,19 @@ urlpatterns = [
     path('presentaciones/editar_presentacion/<int:pk>', EditarPresentacion.as_view(), name="edit_pre"),
     path('presentacion/eliminar_presentacion/<int:pk>', EliminarPresentacion.as_view(), name="del_pre"),
     path('inventario/', ListarInventario.as_view(), name="list_inv"),
-    path('inventario/crear_inventario', CrearInventario.as_view(), name="crear_inv"),
-    path('inventario/editar_inventario/<int:pk>', EditarInventario.as_view(), name="edit_inv"),
+    path('inventario/crear_inventario', ViewCrearInventario.as_view(), name="crear_inv"),
+    path('inventario/editar_inventario/<int:pk>', ViewEditarInventario.as_view(), name="edit_inv"),
+    path('inventario/detalle_inventario/<int:pk>', DetalleInventario.as_view(), name="det_inv"),
     path('inventario/eliminar_inventario/<int:pk>', EliminarInventario.as_view(), name="del_inv"),
     path('inventario/auto_prod_list', obtener_productos_autocomplete, name='auto_prod_list'),
     path('inventario/agregar_producto', agregar_producto_detalle, name="add_prod_detalle"),
-    path('inventario/guardar_detalles_inventario', guardar_datos_inventario, name='guardar_dato_inventario')
+    path('inventario/guardar_detalles_inventario', guardar_datos_inventario, name='guardar_dato_inventario'),
+    path('inventario/actualizar_inventario', actualizar_datos_inventario, name='add_update_detalle_inv'),
+    path('inventario/agregar_prod_update', update_producto_detalle, name="add_update_inv"),
+    path('ventas/', ListarVentas.as_view(), name="list_venta"),
+    path('ventas/crear_venta', ViewCrearVenta.as_view(), name="crear_venta"),
+    path('ventas/detalle_de_venta/<int:pk>', ViewDetalleVenta.as_view(), name='detalle_venta'),
+    path('ventas/productos_autocomplete_inv', obtener_productos_inventario_autocomplete, name='prod_inv_autocomplete'),
+    path('ventas/agregar_productos_detalle_venta', agregar_producto_detalle_venta, name='add_prod_venta'),
+    path('ventas/efectuar_venta', efectuar_venta, name='efectuar_venta')
 ]

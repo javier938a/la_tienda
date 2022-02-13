@@ -1,4 +1,3 @@
-from ast import Mod
 from itertools import product
 from pyexpat import model
 from django.db import models
@@ -82,12 +81,12 @@ class ProductoStockSucursal(models.Model):
         return "%s -> %s"%(self.inventario_productos, self.producto)
 
         
-class FacturaVentas(models.Model):
+class Venta(models.Model):
     fecha_venta=models.DateTimeField(help_text="Ingrese la fecha de la venta", auto_now=True)
     usuario=models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    numero_factura=models.CharField(help_text="Ingrese el numero de factura", max_length=50)
+    numero_factura=models.CharField(help_text="Ingrese el numero de factura", max_length=50, null=True)
     sucursal=models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True)
-    total_por_iva=models.DecimalField(help_text="Total resultante de multiplicar el total por el procentaje de iva", decimal_places=2, max_digits=100, null=True)
+    total_iva=models.DecimalField(help_text="Total resultante de multiplicar el total por el procentaje de iva", decimal_places=2, max_digits=100, null=True)
     total_sin_iva=models.DecimalField(help_text="Total de la suma de todos los productos sin iva", decimal_places=2, max_digits=100, null=True)
     total_con_iva=models.DecimalField(help_text="Total de la suma de todos los productos mas el total del iva", decimal_places=2, max_digits=100, null=True)
     
@@ -95,12 +94,12 @@ class FacturaVentas(models.Model):
         return "Factura N# %s | Total: %s"%(self.numero_factura, self.total_con_iva)
 
 
-class Ventas(models.Model):
-    factura=models.ForeignKey(FacturaVentas, on_delete=models.SET_NULL, null=True)
+class DetalleVenta(models.Model):
+    factura=models.ForeignKey(Venta, on_delete=models.SET_NULL, null=True)
     producto_stock=models.ForeignKey(ProductoStockSucursal, on_delete=models.SET_NULL, null=True)
     cantidad=models.IntegerField(help_text="Ingrese la cantidad a comprar")
-    precio=models.DecimalField(help_text="Ingrese el precio del producto", decimal_places=2, max_digits=10)
-    total=models.DecimalField(help_text="", decimal_places=2, max_digits=10)
+    precio=models.DecimalField(help_text="Ingrese el precio del producto", decimal_places=2, max_digits=10, null=True)
+    total=models.DecimalField(help_text="", decimal_places=2, max_digits=10, null=True)
 
     def __str__(self) -> str:
         return "Producto: %s | Cantidad: %s | Precio: %s | total: %s"%(self.producto_stock, self.cantidad, self.precio, self.total)

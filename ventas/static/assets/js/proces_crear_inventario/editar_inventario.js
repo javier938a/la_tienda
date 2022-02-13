@@ -68,7 +68,7 @@ $(document).ready(function(){
 
     //funcion que sirve para agregar una fila a la tabla
     function agregar_producto_a_tabla(id_producto){
-        let url=$("#url_add_prod_detalle").val();
+        let url=$("#url_update_datos_inventario").val();
         let csrftoken=getCookie('csrftoken');
         let datos={
             csrfmiddlewaretoken:csrftoken,
@@ -160,62 +160,57 @@ $(document).ready(function(){
     }
 
     //guardar el inventario
-    $("#guardar").click(function(evt){
+    $("#actualizar").click(function(evt){
         let tabla_prod=$("#table-productos tr");
-        //validando el numero de filas de la tabla para poder iterar
-        let numero_filas=tabla_prod.length;
-        if(numero_filas>0){
-            let resultado=validar_lista_productos(tabla_prod);
-            console.log(resultado);
-            if(resultado){//si resultado es true hay que guardar todos los productos 
-                detalles_productos=obtener_productos(tabla_prod);//obteniendo los detalles de productos
-                productos_json=JSON.stringify(detalles_productos);//convirtiendo los productos a json
-                console.log(detalles_productos);
-                descripcion=$("#descripcion").val();//obteniendo la descripcion
-                id_sucursal=$("#sucursal").val();//obteniendo la sucursal
-                total=$("#total").text().replace('$','');
-                const csrftoken=getCookie('csrftoken');
-                if(descripcion.length>0 && id_sucursal.length>0){//si hay una descipcion ingresado y un id_sucursal seleccionado se procede a enviar
-                    datos_inventario={
-                        csrfmiddlewaretoken:csrftoken,
-                        'descripcion':descripcion,
-                        'id_sucursal':id_sucursal,
-                        'total':total,
-                        'productos_json':productos_json
-                    }
-                    url=$("#url_guardar_datos_inventario").val();
-                    $.ajax({
-                        url:url,
-                        type:'POST',
-                        data:datos_inventario,
-                        dataType:'json',
-                        success:function(data){
-                            resultado=data.res;
-                            if(resultado==true){
-                                toastr['success']("Inventario cargado exitosamente");
-                                setTimeout(function(){
-                                    url_listar_inv=$("#url_list_inv").val();
-                                    window.location.href=url_listar_inv;
-                                }, 1500)
-                            }
-                        }            
-                    });
-    
-                }else{
-                    toastr['error']("Dede de ingresar una descripcion y seleccionar un sucursal");
-                }
-                
-            }else{
-                toastr['error']("Debe de llenar todos los campos de los productos ingresados");
-            }
-        }else{
-            toastr['error']("Ingresar productos al inventario");
-        }
+        let resultado=validar_lista_productos(tabla_prod);
+        if(resultado){//si resultado es true hay que guardar todos los productos 
+            detalles_productos=obtener_productos(tabla_prod);//obteniendo los detalles de productos
+            productos_json=JSON.stringify(detalles_productos);//convirtiendo los productos a json
+            console.log(detalles_productos);
+            descripcion=$("#descripcion").val();//obteniendo la descripcion
+            id_sucursal=$("#sucursal").val();//obteniendo la sucursal
+            id_inventario=$("#id_inventario").val();
 
+            total=$("#total").text().replace('$','');
+            const csrftoken=getCookie('csrftoken');
+            if(descripcion.length>0 && id_sucursal.length>0){//si hay una descipcion ingresado y un id_sucursal seleccionado se procede a enviar
+                datos_inventario={
+                    csrfmiddlewaretoken:csrftoken,
+                    'id_inventario':id_inventario,
+                    'descripcion':descripcion,
+                    'id_sucursal':id_sucursal,
+                    'total':total,
+                    'productos_json':productos_json
+                }
+                url=$("#url_update_detalle_inv").val();
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    data:datos_inventario,
+                    dataType:'json',
+                    success:function(data){
+                        resultado=data.res;
+                        if(resultado==true){
+                            toastr['success']("Inventario cargado exitosamente");
+                            setTimeout(function(){
+                                url_listar_inv=$("#url_list_inv").val();
+                                window.location.href=url_listar_inv;
+                            }, 1500)
+                        }
+                    }            
+                });
+
+            }else{
+                toastr['error']("Dede de ingresar una descripcion y seleccionar un sucursal")
+            }
+            
+        }else{
+            toastr['warning']("Debe de llenar todos los campos de los productos ingresados");
+        }
     });
     
-    function validar_lista_productos(tabla){
-        cuenta_vacios=0;//cuenta si todo los campos estan vacios si encuentra 1 suma cero y no deja registrar
+    function validar_lista_productos(tabla){//cuenta si todo los campos estan vacios si encuentra 1 suma cero y no deja registrar
+        cuenta_vacios=0;
         resultado=false;
         tabla.each(function(){
             let sel=$(this).find('.select').val();
@@ -250,12 +245,13 @@ $(document).ready(function(){
        let datos=[];
        tabla.each(function(){
             let idproducto=$(this).find('.idprod').val();
-            let id_presetacion=$(this).find('.select').val();
+            let id_prod_inv=$(this).find(".id_prod_inv").val();
+            let id_presentacion=$(this).find('.select').val();
             let cantidad=$(this).find('.cant').val();
-            let costo=$(this).find('.cost').val();
-            let precio=$(this).find('.pre').val();
+            let costo=$(this).find('.cost').val().replace("$","");
+            let precio=$(this).find('.pre').val().replace("$", "");
             let total=$(this).find('.tot').val().replace("$",'');
-            fila={'id_producto':idproducto, 'id_presentacion':id_presetacion, 'cantidad':cantidad, 'costo':costo, 'precio':precio, 'total':total};
+            fila={'id_prod_inv':id_prod_inv,'id_producto':idproducto, 'id_presentacion':id_presentacion, 'cantidad':cantidad, 'costo':costo, 'precio':precio, 'total':total};
             datos.push(fila);       
         });
        return datos;

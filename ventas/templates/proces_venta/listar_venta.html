@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-
 {% block contenido %}
     <div class="pagetitle">
-      <h1>Listar Inventarios</h1>
+      <h1>Listar Ventas</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'store:list_inv' %}">Listar inventario</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'store:list_venta' %}">Listar Ventas</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -17,8 +16,8 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Usuarios</h5>
-              <a class="btn btn-primary pull-right" href="{% url 'store:crear_inv' %}">Crear Inventario</a>
+              <h5 class="card-title">Ventas</h5>
+              <a class="btn btn-primary pull-right" href="{% url 'store:crear_venta' %}">Crear Venta</a>
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -32,22 +31,23 @@
                   </tr>
                 </thead>
                 <tbody>
-                    {% if inventario %}
-                        {% for inv in inventario %}
+                    {% if ventas %}
+                        {% for venta in ventas %}
                             <tr>                    
-                                <th scope="row">{{ inv.id }}</th>
-                                <td>{{ inv.usuario }}</td>
-                                <td>{{ inv.descripcion }}</td>
-                                <td>{{ inv.sucursal }}</td>
-                                <td>{{ inv.total }}</td>
+                                <th scope="row">{{ venta.id }}</th>
+                                <td>{{ venta.usuario }}</td>
+                                <td>{{ venta.fecha_venta }}</td>
+                                <td>{{ venta.numero_factura }}</td>
+                                <td>{{ venta.sucursal }}</td>
+                                <td>{{ venta.total }}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             Action
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{% url 'store:edit_inv' inv.id %}">Editar</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'store:det_inv' inv.id %}">Detalle de Inventario</a></li>
+                                            <li><a class="dropdown-item" href="#">Editar</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'store:detalle_venta' venta.id %}">Detalle de venta</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -72,5 +72,5 @@
 {% load static %}
 
 {% block extra-script %}
-    <script src="{% static 'assets/js/proces_usuario/listar_inventario.js' %}"></script>
+    <script src="{% static 'assets/js/proces_venta/listar_venta.js' %}"></script>
 {% endblock %}
