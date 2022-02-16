@@ -11,7 +11,7 @@ from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProdu
 from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
 from .views import ListarInventario, ViewCrearInventario, ViewEditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
 from .views import guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle, DetalleInventario
-from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
+from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
 
 
 app_name="store"
@@ -56,5 +56,6 @@ urlpatterns = [
     path('ventas/detalle_de_venta/<int:pk>', ViewDetalleVenta.as_view(), name='detalle_venta'),
     path('ventas/productos_autocomplete_inv', obtener_productos_inventario_autocomplete, name='prod_inv_autocomplete'),
     path('ventas/agregar_productos_detalle_venta', agregar_producto_detalle_venta, name='add_prod_venta'),
-    path('ventas/efectuar_venta', efectuar_venta, name='efectuar_venta')
+    path('ventas/efectuar_venta', efectuar_venta, name='efectuar_venta'),
+    path('ventas/verificar_stock_producto', verificar_stock_producto, name="verificar_stock")
 ]

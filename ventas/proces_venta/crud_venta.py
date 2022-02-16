@@ -1,6 +1,7 @@
 from math import prod
 from multiprocessing import context
 from pyexpat import model
+from traceback import print_tb
 from django.views.generic import ListView, TemplateView, DetailView
 from ventas.models import Venta, DetalleVenta, Sucursal, ProductoStockSucursal, User
 from django.db.models import Q
@@ -54,18 +55,33 @@ def obtener_productos_inventario_autocomplete(request):
 def agregar_producto_detalle_venta(request):
     id_producto_stock_ubicacion=request.POST.get('id_prod_stock')
     producto_stock_ubi=ProductoStockSucursal.objects.get(id=id_producto_stock_ubicacion)
-    fila="<tr>"
-    fila+="<td><input class='form-control id_prod_stock' value='"+str(producto_stock_ubi.id)+"' disabled></td>"
-    fila+="<td><input class='form-control' value='"+str(producto_stock_ubi.producto)+"' disabled></td>"
-    fila+="<td><input class='form-control' value='"+str(producto_stock_ubi.presentacion)+"' disabled></td>"
-    fila+="<td><input class='form-control cant' value='1'></td>"
-    fila+="<td><input class='form-control pre' value='$"+str(producto_stock_ubi.precio)+"' disabled></td>"
-    fila+="<td><input class='form-control tot' value='$"+str(producto_stock_ubi.precio)+"' disabled></td>"
-    fila+="<td><input class='btn btn-danger form-control delfila' type='button' value='Eliminar'></td>"
-    fila+="</tr>"
+    fila=""
+    existencia=producto_stock_ubi.cantidad#obtenemos la existencia del producto
+    res=False#esta variable confirmara si hay existencia si es False es porque no hay en existencia si cambia True es porque hay en existencia
+    if int(existencia)>0:#si es mayor que cero se crea la fila con sus valores y por defencto con cantidad 1
+        fila="<tr>"
+        fila+="<td><input class='form-control id_prod_stock' value='"+str(producto_stock_ubi.id)+"' disabled></td>"
+        fila+="<td><input class='form-control' value='"+str(producto_stock_ubi.producto)+"' disabled></td>"
+        fila+="<td><input class='form-control' value='"+str(producto_stock_ubi.presentacion)+"' disabled></td>"
+        fila+="<td><input class='form-control cant' value='1'></td>"
+        fila+="<td><input class='form-control pre' value='$"+str(producto_stock_ubi.precio)+"' disabled></td>"
+        fila+="<td><input class='form-control tot' value='$"+str(producto_stock_ubi.precio)+"' disabled></td>"
+        fila+="<td><input class='btn btn-danger form-control delfila' type='button' value='Eliminar'></td>"
+        fila+="</tr>"
+        res=True
 
     datos={
+        'res':res,
         'fila_producto':fila,
+    }
+    return JsonResponse(datos, safe=False)
+
+def verificar_stock_producto(request):
+    id_prod_stock=request.POST.get('id_prod_stock')
+    producto_stock=ProductoStockSucursal.objects.get(id=id_prod_stock)
+    cantidad_real=producto_stock.cantidad
+    datos={
+        'cantidad_real':cantidad_real,
     }
     return JsonResponse(datos, safe=False)
 
@@ -103,8 +119,49 @@ def efectuar_venta(request):
                 precio=precio,
                 total=total
             )
+            #cuando la venta de un producto se efectua se debe de alterar el stock restandole la cantidad que se vende
+            nueva_cantidad_disponible=int(producto_stock.cantidad)-int(cantidad)
+            costo_producto_stock=float(producto_stock.costo)
+            nuevo_total_inventario=nueva_cantidad_disponible*costo_producto_stock
+            #teniendo la cantidad disponible se actualiza el producto_stock_ubicacion
+            ProductoStockSucursal.objects.filter(id=id_prod_stock).update(
+                cantidad=nueva_cantidad_disponible,
+                total=nuevo_total_inventario
+            )
             cuenta_prod=cuenta_prod+1
-        if cuenta_prod==len(destalles_de_ventas):
-            res=True
-    
-    return JsonResponse({'res':res})
+            if cuenta_prod==len(destalles_de_ventas):
+                res=True
+            datos=None
+            if res==True:#si se registran bien todos los detalles de facturas pasara a generarse el contenido del ticket
+                ##obteniendo todos los datos registrados para devolverlos ya que con ellos se formara la factura o en este caso el ticket##
+                detalle_de_factura_obj=DetalleVenta.objects.filter(factura=factura)
+                detalles_de_factura=[]
+                for detalle in detalle_de_factura_obj:
+                    fila={
+                        'producto':str(detalle.producto_stock.producto), 
+                        'presentacion':str(detalle.producto_stock.presentacion),
+                        'cantidad':str(detalle.cantidad), 
+                        'precio':str(detalle.precio), 
+                        'total':str(detalle.total)
+                        }
+                    detalles_de_factura.append(fila)
+
+                ticket={
+                    'factura':{
+                        'fecha_venta':str(factura.fecha_venta),
+                        'cajero':str(factura.usuario),
+                        'numero_factura':str(factura.numero_factura),
+                        'sucursal':str(factura.sucursal),
+                        'total_iva':str(factura.total_iva),
+                        'total_sin_iva':str(factura.total_sin_iva),
+                        'total_con_iva':str(factura.total_con_iva)
+                    },
+                    'detalle_de_factura':json.dumps(detalles_de_factura)
+                }
+                datos={
+                    'res':res,
+                    'datos_factura':ticket
+                }
+            
+        
+    return JsonResponse(datos, safe=False)

@@ -116,6 +116,9 @@ class DetalleVenta(models.Model):
     def __str__(self) -> str:
         return "Producto: %s | Cantidad: %s | Precio: %s | total: %s"%(self.producto_stock, self.cantidad, self.precio, self.total)
 
+
+
+
 class ProductoStockGlobal(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
     presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)

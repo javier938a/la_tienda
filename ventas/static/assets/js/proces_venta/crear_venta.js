@@ -44,7 +44,16 @@ $(document).ready(function(){
             let prod_array=producto.split('|');
             id_prod_stock=prod_array[0];
             console.log(producto);
-            agregar_producto_detalle_venta(id_prod_stock);
+            let detalle_productos=$("#table-productos-venta tr")
+            let esta_agregado=validar_producto_unico(detalle_productos, id_prod_stock);
+            if(esta_agregado){//si esta agregando devuelve siempre false entonces se agrega el producto
+                agregar_producto_detalle_venta(id_prod_stock);//agregando el producto
+            }else{//de lo contrario es por ya hay un producto del mismo agregado y manda un error
+                $("#producto").val("");//limpiando el campo de producto
+                toastr['error']("Este producto ya agregado en la venta, porfavor ingrese otro producto");
+                
+            }
+            
 
         }
     });
@@ -62,11 +71,16 @@ $(document).ready(function(){
             data:datos,
             dataType:'json',
             success:function(data){
+                let res = data.res
                 let fila_producto=data.fila_producto;
-                console.log(fila_producto);
-                $("#table-productos-venta").prepend(fila_producto);
-                $("#producto").val("");
-                calcular_totales();
+                if(res===true){//si res retorna true es porque de este producto aun hay en existencia
+                    console.log(fila_producto);
+                    $("#table-productos-venta").prepend(fila_producto);//y se agrega la fila a la tabla
+                    $("#producto").val("");
+                    calcular_totales();
+                }else{
+                    toastr['warning']("De este producto que intenta agregar ya no hay en existencia");
+                }
             }
         })
     }
@@ -85,18 +99,54 @@ $(document).ready(function(){
         var m = Number((Math.abs(num) * 100).toPrecision(15));
         return Math.round(m) / 100 * Math.sign(num);
     }
+   
     $(document).on('keyup', '.cant', function(){//obteniendo el evento de cada una de las celdas en donde se ingresa la cantidad
         let cantidad= parseInt($(this).val());//obteniendo el total que se esta ingresando
         let precio=$(this).closest('tr').find('.pre').val().replace('$', '');//obtenendo el costo que esta en el canpo costo no se convierte porque pueda quee este vacio
                                         //closest devuelve el primer antecesor del elemento
-        if(!isNaN(cantidad)){//si el el campo costo no esta vacio multiplica el costo por el total
-            let total=cantidad*parseFloat(precio);
-            $(this).closest('tr').find('.tot').val('$'+redondear(total));//se asigna el total campo del total
+
+        if(!isNaN(cantidad)){//si el el campo costo no esta vacio verifica el stock de este producto y si hay en existencia multiplica el costo por el total
+            //datos para calcular el stock en tiempo real
+            let id_prod_stock=$(this).closest('tr').find('.id_prod_stock').val();//id del producto de la fila
+            const csrftoken=getCookie('csrftoken');
+            let url_verificar_stock=$("#url_verificar_stock").val();//aqui se almacena la url que consulta el stock
+            datos_prod={
+                        csrfmiddlewaretoken:csrftoken,
+                        'id_prod_stock':id_prod_stock,//se le envia el id de producto stock ubicacion
+            }
+            let fila_producto = $(this).closest('tr');//almacena la referencia a la fila del producto
+            let campo_cantidad=$(this);//almacena la referencia al campo actual para usarlo dentro de la respuesta de la peticion ajax
+            $.ajax({                  //que consulta el stock
+                url:url_verificar_stock,
+                type:'POST',
+                data:datos,
+                dataType:'json',
+                success:function(data){
+                    let cantidad_real=parseInt(data.cantidad_real);
+                    if(cantidad>0 && cantidad<=cantidad_real){
+                        console.log("Entra aqui")
+                        let total=cantidad*parseFloat(precio);
+        
+                        fila_producto.find('.tot').val('$'+redondear(total));//se asigna el total campo del total
+                        calcular_totales();
+                    }else if(cantidad>cantidad_real){
+                        console.log("cantidad real: "+cantidad_real)
+                        campo_cantidad.val(""+cantidad_real);
+                        calcular_totales();
+                        toastr["error"](cantidad_real+" es la cantidad maxima que hay en existencia para este producto")
+                    }
+                    //si la cantidad ingresada es menor que la cantidad dispobible
+                }
+           });
         }else{
-            $(this).closest('tr').find('.tot').val("$0.0");//de lo contrario el input del total sera vacio
+            fila_producto.find('.tot').val("$0.0");//de lo contrario el input del total sera vacio
+            calcular_totales();
+            //si el campo esta vacio obtiene la cantidad antes borrada y se la suma 
+            
         }
-        calcular_totales();
+       
     });
+
 
     function calcular_totales(){
         let total=0;
@@ -156,6 +206,7 @@ $(document).ready(function(){
                     success:function(data){
                         let resultado=data.res;
                         if(resultado){
+                            factura=data.datos_factura;//si el resultado es true entonces obtengo los datos de la factura y mandarla a imprimirla
                             toastr['success']("Venta registrada exitosamente");
                             ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
                         }else{
@@ -203,6 +254,21 @@ $(document).ready(function(){
             datos.push(fila);
         });
         return datos;
+    }
+
+    //validar que no se agregue dos veces el mismo producto
+    function validar_producto_unico(tabla, id){
+        res=true;
+        tabla.each(function(index){
+            id_producto_stock=$(this).find('.id_prod_stock').val();
+            
+            console.log("este es el id: "+id_prod_stock)
+            if(id_producto_stock===id){
+               res=false 
+            }
+        });
+        console.log("Resultado siempre da "+res)
+        return res;
     }
 
     
