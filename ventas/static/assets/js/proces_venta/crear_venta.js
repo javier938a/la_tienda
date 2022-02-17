@@ -172,7 +172,8 @@ $(document).ready(function(){
         let total_con_iva=total_iva+redondear(total);
         $("#total").text("$"+ redondear(total_con_iva));
     }
-
+    let ticket=null;//esta variable es para cuando el usuario le de guardar a la venta almacene los datos de la venta devueltos
+                    //para posteriormento imprimirlo en el evento del teclado
     $("#efectuar_venta").click(function(evt){
         console.log("Hola");
         let no_documento=$("#no_documento").val();
@@ -206,25 +207,9 @@ $(document).ready(function(){
                     success:function(data){
                         let resultado=data.res;
                         if(resultado){
-                            factura=data.datos_factura;//si el resultado es true entonces obtengo los datos de la factura y mandarla a imprimirla
-                            //toastr['success']("Venta registrada exitosamente");
-                            url_print_ticket=$("#url_print_ticket").val();
-                            $.ajax({
-                                url:url_print_ticket,
-                                type:'POST',
-                                data:datos,
-                                dataType:'json',
-                                success:function(data){
-                                    let resultado=data.res;
-                                    if(resultado){                            
-                                        toastr['success']("Imprimiendo ticket");
-                                        
-                                        ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
-                                    }else{
-                                        toastr['error']("La Venta no pudo ser registrada exitosamente");
-                                    }
-                                }
-                           });
+                            ticket=JSON.stringify(data.datos_factura);//si el resultado es true entonces obtengo los datos de la factura y mandarla a imprimirla
+                            $("#efectuar_venta").prop('disabled', true);
+                            $("#txt_efectivo").prop('disabled', false);
                             ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
                         }else{
                             toastr['error']("La Venta no pudo ser registrada exitosamente");
@@ -238,6 +223,55 @@ $(document).ready(function(){
             toastr['error']("Debe de ingresar un numero de factura");
         }
     });
+
+    //calculando cambio
+    $("#txt_efectivo").keyup(function(evt){
+        let total= parseFloat($("#total").text().replace("$", ""));
+        let efectivo= parseFloat($("#txt_efectivo").val().replace("$", ""));
+        let cambio=efectivo-total;
+        console.log("total "+total);
+        console.log("efectivo "+efectivo);
+        console.log("cambio "+cambio);
+        
+        $("#txt_cambio").val("$"+cambio);
+
+    })
+    $("#txt_efectivo").keypress(function(evt){
+        console.log(evt.which)//la tecla enter es la numero 13 si da enter se imprime la factura
+        console.log(ticket);
+        let num_tecla_enter=evt.which;
+        if(num_tecla_enter===13){
+            url_print_ticket=$("#url_print_ticket").val();
+            const csrftoken=getCookie('csrftoken');
+            let datos={
+                        csrfmiddlewaretoken:csrftoken,
+                        'ticket':ticket
+            }
+            $.ajax({
+                    url:url_print_ticket,
+                    type:'POST',
+                    data:datos,
+                    dataType:'json',
+                    success:function(data){
+                    let resultado=data.res;
+                    if(resultado){  
+                        toastr['success']("Venta registrada exitosamente");                          
+                        toastr['success']("Imprimiendo ticket");
+                        setTimeout(function(){
+                            window.location.href=$("#url_listar_ventas").val();
+                        }, 1000)
+    
+                                            ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
+                    }else{
+                            toastr['error']("La Venta no pudo ser registrada exitosamente");
+                        }
+                    }
+            });
+        }
+    })
+
+    //imprimiendo ticket al dar enter al input
+
 
     function validar_detalles_ventas(tabla_detalle){
         //cuenta que no haya ningun campo de cantidad vacio

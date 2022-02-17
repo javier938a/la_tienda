@@ -21,22 +21,37 @@ $(document).ready(function(){
         //porque donde se va imprimir no va ser necesariamente directamente desde el servidor si no de un cliente
         //por ahorita asumimos que se va imprimir desde el servidor
         let id_venta=$("#id_venta").val();//se obtiene el id almacenado
-        let url_print_ticket=$("#url_get_ticket").val();//la url para obtener los dats de la factura
+        let url_get_ticket=$("#url_get_ticket").val();//la url para obtener los dats de la factura
         datos={
             csrfmiddlewaretoken:csrftoken,
             'id_venta':id_venta,
         };
         $.ajax({//se hace la peticion
-            url:url_print_ticket,
+            url:url_get_ticket,
             type:'POST',
             data:datos,
             dataType:'json',
             success:function(data){
                 let resultado=data.res;
                 if(resultado){                            
-                    datos_factura=data.datos_ticket;//se obtienen los datos luego hay que hacer otra peticion a donde se va imprimir el ticket
-                    console.log(datos_factura);
-                    
+                    datos_ticket= JSON.stringify(data.datos_ticket);//se obtienen los datos luego hay que hacer otra peticion a donde se va imprimir el ticket
+                    //console.log(datos_fact);
+                    let url_print_ticket=$("#url_print_ticket").val();
+                    const csrftoken=getCookie('csrftoken');
+                    datos={
+                        csrfmiddlewaretoken:csrftoken,
+                        'ticket':datos_ticket
+                    };
+                    $.ajax({
+                        url:url_print_ticket,
+                        type:'POST',
+                        data:datos,
+                        dataType:'json',
+                        success:function(data){
+                            console.log(data);
+                        }
+                    })
+
                     ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
                 }else{
                     toastr['error']("La Venta no pudo ser registrada exitosamente");

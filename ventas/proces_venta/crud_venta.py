@@ -1,5 +1,3 @@
-from multiprocessing.sharedctypes import Value
-import profile
 from django.views.generic import ListView, TemplateView, DetailView
 from ventas.models import Venta, DetalleVenta, Sucursal, ProductoStockSucursal, User
 from django.db.models import Q
@@ -48,7 +46,7 @@ def obtener_productos_inventario_autocomplete(request):
             productos_buscado=ProductoStockSucursal.objects.filter(Q(inventario_productos__sucursal=sucursal_user))
     
     for producto_ubi in productos_buscado:
-        datos.append(str(producto_ubi.id)+'|'+str(producto_ubi.producto.nombre_producto)+'|'+str(producto_ubi.presentacion.presentacion))
+        datos.append(str(producto_ubi.id)+'|'+str(producto_ubi.producto.nombre_producto)+'|'+str(producto_ubi.presentacion.presentacion)+'|'+str(producto_ubi.cantidad))
 
     return JsonResponse(datos, safe=False)
 
@@ -191,7 +189,9 @@ def Obtener_ticket(request):
 
 #funcion para solo imprimir los datos
 def imprimir_ticket(request):
-    id_venta=request.POST.get('id_venta')
+    datos_ticket=json.loads(request.POST.get('ticket'))
+    print(datos_ticket)
+    ticketera=Usb(0x0483,0x5743, 0)
     #primero darle permiso al puerto lp0 si es necesario...
     #chmod +777 /dev/usb/lp0
     #en linux buscar la impresora entre todos los dispositivos que lista el comando 'lsusb'
@@ -202,9 +202,43 @@ def imprimir_ticket(request):
     #ID idVendor:idProduc
     #en los parametros se colocan como 0xidVendor, 0xidProduct
     #0483:5743
-    print(id_venta)
-    impresora=Usb(0x0483,0x5743, 0)
-    impresora.text("Este es un texto de prueba\n")
-    impresora.qr('You can readme from your smartphone')
-    impresora.cut()
-    return JsonResponse({'res':True})
+    encabezado_tiket=datos_ticket['factura']
+    detalle_ticket=json.loads(datos_ticket['detalle_de_factura'])#se obtiene la posicion cero por que realente este es una lista de lista
+    print("aqui")
+    print(detalle_ticket)
+    fecha_de_venta=encabezado_tiket['fecha_venta']
+    cajero=encabezado_tiket['cajero']
+    numero_de_factura=encabezado_tiket['numero_factura']
+    sucursal=encabezado_tiket['sucursal']
+    total_iva=encabezado_tiket['total_iva']
+    total_sin_iva=encabezado_tiket['total_sin_iva']
+    total_con_iva=encabezado_tiket['total_con_iva']
+
+    print("fecha de venta "+str(fecha_de_venta))
+    res=True
+    try:
+        ticketera.text("No Ticket: "+str(numero_de_factura)+"\n")
+        ticketera.text("Fecha de venta: "+str(fecha_de_venta)+"\n")
+        ticketera.text('Cajero: '+str(cajero)+"\n")
+        ticketera.text("Sucursal: "+str(sucursal)+"\n\n\n")
+        i=0
+        ticketera.text("------------------------------------------------\n")
+        for detalle in detalle_ticket:
+            i=i+1
+            nombre_producto=detalle['producto']
+            presentacion=detalle['presentacion']
+            cantidad=detalle['cantidad']
+            precio=detalle['precio']
+            total=detalle['total']
+            ticketera.text(""+str(i)+" "+(str(nombre_producto)+" "+str(presentacion)).ljust(20, " ")+" "+(str(cantidad)+"x$"+str(precio)).center(5)+" $"+str(total).rjust(10, " ")+"\n")
+        ticketera.text("------------------------------------------------\n")
+        ticketera.text((" total iva:").ljust(35, " ")+"$"+str(total_iva).rjust(3," ")+"\n")
+        ticketera.text((" total sin iva:").ljust(35, " ")+"$"+str(total_sin_iva).rjust(3," ")+"\n")
+        ticketera.text((" total sin iva:").ljust(35, " ")+"$"+str(total_con_iva).rjust(3," ")+"\n")
+        ticketera.text("------------------------------------------------\n")
+        ticketera.cut()
+    except ValueError: 
+        res=False
+
+        
+    return JsonResponse({'res':res})

@@ -69,6 +69,7 @@
               <input type="hidden" name="url_efectuar_venta" id="url_efectuar_venta" value="{% url 'store:efectuar_venta' %}">
               <input type="hidden" name="url_verificar_stock" id="url_verificar_stock" value="{% url 'store:verificar_stock' %}">
               <input type="hidden" name="url_print_ticket" id="url_print_ticket" value="{% url 'store:print_ticket' %}">
+              <input type="hidden" name="url_listar_ventas" id="url_listar_ventas" value="{% url 'store:list_venta' %}">
             </div>
           </div>
         </div>
@@ -136,11 +137,11 @@
                   </tr>
                   <tr>
                     <th scope="row" colspan="5" style="text-align:right;">Efectivo</th>
-                    <td><input class="form-control" type="text" name="" id="txt_efectivo" disabled></td>
+                    <td><input class="form-control" type="text" name="txt_efectivo" id="txt_efectivo" value="" disabled></td>
                   </tr>
                   <tr>
                     <th scope="row" colspan="5" style="text-align:right;">cambio</th>
-                    <td><input class="form-control" type="text" name="" id="txt_efectivo" disabled></td>
+                    <td><input class="form-control" type="text" name="txt_cambio" id="txt_cambio" value="" disabled></td>
                   </tr>
               </tfoot>
               </table>
