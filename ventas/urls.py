@@ -12,7 +12,7 @@ from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, El
 from .views import ListarInventario, ViewCrearInventario, ViewEditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
 from .views import guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle, DetalleInventario
 from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
-
+from .views import imprimir_ticket, Obtener_ticket
 
 app_name="store"
 urlpatterns = [
@@ -57,5 +57,7 @@ urlpatterns = [
     path('ventas/productos_autocomplete_inv', obtener_productos_inventario_autocomplete, name='prod_inv_autocomplete'),
     path('ventas/agregar_productos_detalle_venta', agregar_producto_detalle_venta, name='add_prod_venta'),
     path('ventas/efectuar_venta', efectuar_venta, name='efectuar_venta'),
-    path('ventas/verificar_stock_producto', verificar_stock_producto, name="verificar_stock")
+    path('ventas/verificar_stock_producto', verificar_stock_producto, name="verificar_stock"),
+    path('ventas/imprimir_ticket', imprimir_ticket, name="print_ticket"),
+    path('ventas/obtener_ticket', Obtener_ticket, name='get_ticket')
 ]

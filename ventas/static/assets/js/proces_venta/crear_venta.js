@@ -207,7 +207,24 @@ $(document).ready(function(){
                         let resultado=data.res;
                         if(resultado){
                             factura=data.datos_factura;//si el resultado es true entonces obtengo los datos de la factura y mandarla a imprimirla
-                            toastr['success']("Venta registrada exitosamente");
+                            //toastr['success']("Venta registrada exitosamente");
+                            url_print_ticket=$("#url_print_ticket").val();
+                            $.ajax({
+                                url:url_print_ticket,
+                                type:'POST',
+                                data:datos,
+                                dataType:'json',
+                                success:function(data){
+                                    let resultado=data.res;
+                                    if(resultado){                            
+                                        toastr['success']("Imprimiendo ticket");
+                                        
+                                        ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
+                                    }else{
+                                        toastr['error']("La Venta no pudo ser registrada exitosamente");
+                                    }
+                                }
+                           });
                             ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
                         }else{
                             toastr['error']("La Venta no pudo ser registrada exitosamente");

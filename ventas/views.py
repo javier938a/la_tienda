@@ -8,7 +8,7 @@ from ventas.proces_producto.crud_producto import ListarProductos, CrearProducto,
 from ventas.proces_presentacion.crud_presentacion import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
 from ventas.proces_inventario.crud_inventario import ListarInventario,  ViewCrearInventario, ViewEditarInventario, EliminarInventario, obtener_productos_autocomplete
 from ventas.proces_inventario.crud_inventario import DetalleInventario, agregar_producto_detalle, guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle
-from ventas.proces_venta.crud_venta import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
+from ventas.proces_venta.crud_venta import ListarVentas, ViewCrearVenta, ViewDetalleVenta, imprimir_ticket, Obtener_ticket,verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
 
 # Create your views here.
 
