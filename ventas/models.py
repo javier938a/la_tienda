@@ -1,4 +1,5 @@
 from itertools import product
+from operator import le, truediv
 from pyexpat import model
 from django.db import models
 
@@ -68,6 +69,33 @@ class Presentacion(models.Model):
 
     def __str__(self) -> str:
         return "%s"%self.presentacion
+
+class CargaProductos(models.Model):
+    fecha_carga=models.DateTimeField(auto_now_add=True)
+    descripcion=models.CharField(max_length=200, help_text="Descripcion de la carga de producto")
+    usuario=models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text="Ingrese el usuario que realiza la carga")
+    sucursal=models.ForeignKey(Sucursal, help_text="Sucursal donde se realiza la carga", on_delete=models.SET_NULL, null=True)
+    total=models.FloatField(null=True, help_text="")
+
+    def __str__(self):
+        return self.descripcion
+
+class DetalleCargaProductos(models.Model):
+    carga_producto=models.ForeignKey(CargaProductos, on_delete=models.SET_NULL, null=True)
+    producto=models.ForeignKey(Producto,help_text="Ingrese el nombre del producto", on_delete=models.SET_NULL, null=True)
+    presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)
+    cantidad_anterior=models.IntegerField(help_text="Ingrese la cantidad anterior del producto", null=True)
+    cantidad=models.IntegerField(help_text="Ingrese la cantidad del producto", null=True)
+    nueva_cantidad=models.IntegerField(help_text="Ingrese la nueva cantidad", null=True)
+    costo_anterior=models.FloatField(help_text="Ingrese el costo anterior", null=True)
+    costo=models.FloatField(help_text="Ingrese el costo del producto", null=True)
+    precio_anterior=models.FloatField(help_text="Ingrese el precio anterior", null=True)
+    precio=models.FloatField(help_text="Ingrese el precio a como se va dar el producto en la venta", null=True)
+    total=models.FloatField(help_text="", null=True)
+    tipo_prod=models.CharField(max_length=100, help_text="Ingrese el tipo de producto", null=True)
+
+    def __str__(self):
+        return "%s %s"%(str(self.carga_producto), str(self.producto))
 
 class InventarioProductos(models.Model):
     usuario=models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

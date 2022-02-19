@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import User, Sucursal, Categoria, Presentacion, Producto, ProductoStockSucursal, ProductoStockGlobal
-from .models import Venta, DetalleVenta, InventarioProductos
+from .models import Venta, DetalleVenta, InventarioProductos, CargaProductos, DetalleCargaProductos
 # Register your models here.
 
 admin.site.register(User)
@@ -13,3 +13,5 @@ admin.site.register(DetalleVenta)
 admin.site.register(Venta)
 admin.site.register(ProductoStockGlobal)
 admin.site.register(InventarioProductos)
+admin.site.register(CargaProductos)
+admin.site.register(DetalleCargaProductos)

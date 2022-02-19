@@ -1,5 +1,6 @@
 from unicodedata import name
 from django.urls import path
+from django.views import View
 
 
 from .views import Index
@@ -9,6 +10,7 @@ from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucurs
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
 from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto
 from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
+from .views import ListarCargaProductos, ViewCargaInventario, DetalleCargaInventario, listar_productos_cargados_y_sin_cargar_autocomplete, agregar_producto_detalle_carga, cargar_producto_inventario
 from .views import ListarInventario, ViewCrearInventario, ViewEditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
 from .views import guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle, DetalleInventario
 from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
@@ -41,6 +43,12 @@ urlpatterns = [
     path('presentaciones/crear_presentacion', CrearPresentacion.as_view(), name="crear_pre"),
     path('presentaciones/editar_presentacion/<int:pk>', EditarPresentacion.as_view(), name="edit_pre"),
     path('presentacion/eliminar_presentacion/<int:pk>', EliminarPresentacion.as_view(), name="del_pre"),
+    path('carga/listar_carga_inventario', ListarCargaProductos.as_view(), name="list_carga_prod"),
+    path('carga/agregar_carga_inventario', ViewCargaInventario.as_view(), name="add_carga_prod"),
+    path('carga/detalle_de_carga_inventario/<int:pk>', DetalleCargaInventario.as_view(), name="detalle_carga"),
+    path('carga/listar_productos_cargados_y_sin_cargar', listar_productos_cargados_y_sin_cargar_autocomplete, name="list_prod_autocomplete"),
+    path('carga/agregar_producto_detalle_carga', agregar_producto_detalle_carga, name="add_prod_detalle_carga" ),
+    path('carga/cargar_producto_inventario', cargar_producto_inventario, name='cargar_prod_inv'),
     path('inventario/', ListarInventario.as_view(), name="list_inv"),
     path('inventario/crear_inventario', ViewCrearInventario.as_view(), name="crear_inv"),
     path('inventario/editar_inventario/<int:pk>', ViewEditarInventario.as_view(), name="edit_inv"),

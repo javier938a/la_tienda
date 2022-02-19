@@ -58,7 +58,7 @@ def obtener_productos_autocomplete(request):
     print(request.GET.get('term'))
     productos=None
     datos=[]
-    if clave.strip() is not None:
+    if clave.strip()!='':
         productos=Producto.objects.filter(Q(nombre_producto__icontains=clave))
         for prod in productos:
             datos.append(str(prod.pk)+'|'+str(prod.descripcion))
