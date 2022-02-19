@@ -77,7 +77,29 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">                
-              <button id="efectuar_carga" type="button" class="btn btn-success form-control">Cargar</button>
+              <!-- Disabled Backdrop Modal -->
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#disablebackdrop">
+                Cargar
+              </button>
+              <div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">¿Esta seguro de desea realizar esta carga de inventario?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Hacer esta carga de inventario inplicara afectar el stock de los productos ya existentes en el inventario
+                      Este proceso ya no se podra revertir...
+                      ¿Esta seguro de realizar esta accion?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-success" id="efectuar_carga">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Disabled Backdrop Modal-->
             </div>              
           </div>
           <div class="col-md-1">
