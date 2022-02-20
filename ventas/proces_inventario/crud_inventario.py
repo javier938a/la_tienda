@@ -48,7 +48,7 @@ class EliminarInventario(TemplateView):
 
 class ListarInventario(ListView):
     template_name="proces_inventario/listar_inventario.html"
-    model=InventarioProductos
+    model=ProductoStockSucursal
     context_object_name="inventario"
 
 

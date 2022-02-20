@@ -69,6 +69,28 @@ class Presentacion(models.Model):
 
     def __str__(self) -> str:
         return "%s"%self.presentacion
+class DescargaProductos(models.Model):
+    fecha_descarga=models.DateTimeField(auto_now_add=True)
+    descripcion=models.CharField(max_length=100, help_text="Ingrese la descripcion del evento de descarga")
+    usuario=models.ForeignKey(User, on_delete=models.SET_NULL, null="Usuario que hace ka descarga")
+    sucursal=models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True, help_text="Sucursal de donde se hace la descarga")
+    total=models.FloatField(null=True, help_text="")
+
+class DetalleDescargaProducto(models.Model):
+    descarga_productos=models.ForeignKey(DescargaProductos, on_delete=models.SET_NULL, null=True)
+    producto=models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
+    presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)
+    cantidad_anterior=models.IntegerField(help_text="Ingrese la cantidad anterior del producto", null=True)
+    cantidad=models.IntegerField(help_text="Ingrese la cantidad del producto", null=True)
+    nueva_cantidad=models.IntegerField(help_text="Ingrese la nueva cantidad", null=True)
+    costo_anterior=models.FloatField(help_text="Ingrese el costo anterior", null=True)
+    costo=models.FloatField(help_text="Ingrese el costo del producto", null=True)
+    precio_anterior=models.FloatField(help_text="Ingrese el precio anterior", null=True)
+    precio=models.FloatField(help_text="Ingrese el precio a como se va dar el producto en la venta", null=True)
+    total=models.FloatField(help_text="", null=True)
+
+    def __str__(self):
+        return "%s -> %s"%(self.descarga_productos, self.producto)
 
 class CargaProductos(models.Model):
     fecha_carga=models.DateTimeField(auto_now_add=True)
@@ -108,17 +130,17 @@ class InventarioProductos(models.Model):
         return "%s %s "%(self.descripcion, str(self.total))
 
 class ProductoStockSucursal(models.Model):
-    inventario_productos=models.ForeignKey(InventarioProductos, on_delete=models.SET_NULL, null=True)
+    sucursal=models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True)
+    usuario=models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     producto=models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
     presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)
     cantidad=models.IntegerField(help_text="Ingrese la cantidad de producto")
     costo=models.FloatField(help_text="Ingrese el costo de compra del producto ",  null=True)
     precio=models.FloatField(help_text="Ingrese el precio de venta del producto",  null=True)
-    total=models.FloatField(help_text="", null=True)
 
 
     def __str__(self) -> str:
-        return "%s -> %s"%(self.inventario_productos, self.producto)
+        return "%s -> %s"%(str(self.sucursal), self.producto)
 
         
 class Venta(models.Model):

@@ -33,13 +33,14 @@ class DetalleCargaInventario(DetailView):
 
 def listar_productos_cargados_y_sin_cargar_autocomplete(request):
     id_sucursal=request.POST.get('id_sucursal')
+    sucursal=Sucursal.objects.get(id=id_sucursal)
     clave=request.POST.get('term')
     producto_stock=None
     producto=None
     print(clave)
     if clave.strip()!='':
         producto=Producto.objects.filter(Q(nombre_producto__icontains=clave)| Q(descripcion__icontains=clave))
-        producto_stock=ProductoStockSucursal.objects.filter(Q(producto__nombre_producto__icontains=clave)|Q(producto__descripcion__icontains=clave))
+        producto_stock=ProductoStockSucursal.objects.filter(sucursal=sucursal).filter(Q(producto__nombre_producto__icontains=clave)|Q(producto__descripcion__icontains=clave))
     else:
         producto=Producto.objects.all()
         producto_stock=ProductoStockSucursal.objects.all()
@@ -215,6 +216,8 @@ def cargar_producto_inventario(request):
                 presentacion=Presentacion.objects.get(id=id_presentacion)
 
                 ProductoStockSucursal.objects.create(
+                    sucursal=sucursal,
+                    usuario=user,
                     producto=producto,
                     presentacion=presentacion,
                     cantidad=cantidad,

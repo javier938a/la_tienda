@@ -237,7 +237,9 @@ $(document).ready(function(){
         console.log(costo);
         if(!isNaN(cantidad)){
             let total = cantidad*parseFloat(costo)
-            $(this).closest('tr').find('.tot').val("$"+redondear(total));
+            if(!isNaN(total)){
+                $(this).closest('tr').find('.tot').val("$"+redondear(total));
+            }            
         }else{
             $(this).val("0");
             $(this).closest('tr').find('.tot').val("$0.0");

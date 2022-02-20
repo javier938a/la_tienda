@@ -39,11 +39,11 @@ def obtener_productos_inventario_autocomplete(request):
     print(request.POST)
     datos=[]
     if clave is not None:
-        productos_por_sucursal=ProductoStockSucursal.objects.filter(Q(inventario_productos__sucursal=sucursal_user))
+        productos_por_sucursal=ProductoStockSucursal.objects.filter(Q(sucursal=sucursal_user))
         productos_buscado=productos_por_sucursal.filter(Q(producto__nombre_producto__icontains=clave) | Q(presentacion__presentacion__icontains=clave))
     else:
         if sucursal_user is not None:
-            productos_buscado=ProductoStockSucursal.objects.filter(Q(inventario_productos__sucursal=sucursal_user))
+            productos_buscado=ProductoStockSucursal.objects.filter(Q(sucursal=sucursal_user))
     
     for producto_ubi in productos_buscado:
         datos.append(str(producto_ubi.id)+'|'+str(producto_ubi.producto.nombre_producto)+'|'+str(producto_ubi.presentacion.presentacion)+'|'+str(producto_ubi.cantidad))
