@@ -36,8 +36,16 @@ $(document).ready(function(){
         select:function(event, ui){
             let producto=ui.item.value;
             let array_producto=producto.split('|');
-            id_prod_stock=array_producto[0];
-            agregar_producto_a_descargar_detalle(id_prod_stock);
+            let detalle_productos=$("#table-productos-descarga tr");
+            let id_prod_stock=array_producto[0];
+            let esta_agregado=validar_producto_unico(detalle_productos, id_prod_stock);
+            if(esta_agregado){
+                agregar_producto_a_descargar_detalle(id_prod_stock);
+            }else{
+                toastr['error']("Este producto ya esta agregado en el detalle de productos, ingrese otro distinto");
+                $("#producto").val("");
+            }
+            
 
         }
     });  
@@ -55,7 +63,7 @@ $(document).ready(function(){
             data:datos,
             dataType:'json',
             success:function(data){
-                let fila_producto=data.fila_producto
+                let fila_producto=data.fila_producto                
                 $("#table-productos-descarga").prepend(fila_producto)
                 $("#producto").val("");
             }
@@ -78,7 +86,63 @@ $(document).ready(function(){
         calcular_totales();
     });
 
+    $("#efectuar_descarga").click(function(evt){
+        let descripcion=$("#descripcion").val();
+        if(descripcion.length>0){
+            let tabla_detalle_de_descarga_productos=$("#table-productos-descarga tr");
+            let res_tabla_descarga_prod=validar_detalle_de_descarga_productos(tabla_detalle_de_descarga_productos);
+            if(res_tabla_descarga_prod===false){
+                const csrftoken=getCookie('csrftoken');
+                let detalles_descarga_producto=obtener_detalle_productos_a_descargar(tabla_detalle_de_descarga_productos);
+                let total=$("#total").text().replace('$', '');
+                console.log(detalles_descarga_producto)
+                let url_efectuar_descarga_prod=$("#url_efectuar_descarga_prod").val();
+                let datos={
+                    csrfmiddlewaretoken:csrftoken,
+                    'descripcion':descripcion,
+                    'total':total,
+                    'detalles_descarga_producto':JSON.stringify(detalles_descarga_producto)
+                }
+                console.log(datos);
+                $.ajax({
+                    url:url_efectuar_descarga_prod,
+                    type:'POST',
+                    data:datos,
+                    dataType:'json',
+                    success:function(data){
+                        let res=data.res;
+                        if(res===true){
+                            toastr['success']("Descarga efectuada exitosamente")
+                            setTimeout(function(){
+                                window.location.href=$("#url_listar_descarga_prod").val();
+                            }, 1000);
+                        }else{
+                            toastr['error']("Hubo un error al registrar los datos comuniquese con el administrador del sistema..");
+                        }
+                    }
+                });
+            }else{
+                toastr['error']("Debe de llenar todos los campos de cantidad de todos los productos en la descarga a efectuar..");
+            }
+        }else{
+            toastr['error']("Debe de agregar una descripcion como justificacion de la descarga de los productos");
+        }
+    })
 
+    //validar que no se agregue dos veces el mismo producto
+    function validar_producto_unico(tabla, id){
+        res=true;
+        tabla.each(function(index){
+            id_prod_stock=$(this).find('.idprod').val();
+            
+            console.log("este es el id: "+id_prod_stock)
+            if(id_prod_stock===id){
+               res=false 
+            }
+        });
+        console.log("Resultado siempre da "+res)
+        return res;
+    }
 
     $(document).on('click', '.delfila', function(){
         let fila = $(this).parents('tr');
@@ -89,6 +153,37 @@ $(document).ready(function(){
     function redondear(num) {
         var m = Number((Math.abs(num) * 100).toPrecision(15));
         return Math.round(m) / 100 * Math.sign(num);
+    }
+
+    function validar_detalle_de_descarga_productos(tabla_detalle){
+        let cuenta_cantidad=0;
+        let res=false;
+
+        tabla_detalle.each(function(index){
+            let cantidad=$(this).find('.cant').val();
+            if(cantidad.length===0){
+                cuenta_cantidad++;
+            }
+        });
+        let num_filas=tabla_detalle.length;
+        if(cuenta_cantidad>0 || num_filas===0){
+            res=true
+        }
+        return res;
+    }
+
+    function obtener_detalle_productos_a_descargar(tabla){
+        let datos=[];
+        tabla.each(function(index){
+            let id_prod_stock=$(this).find('.idprod').val();
+            let cantidad=$(this).find('.cant').val();
+            let costo=$(this).find('.cost').val();
+            let total=$(this).find('.tot').val().replace('$','');
+            let fila={'id_prod_stock':id_prod_stock, 'cantidad':cantidad, 'costo':costo, 'total':total};
+            datos.push(fila);
+        });
+        
+        return datos;
     }
 
     function calcular_totales(){

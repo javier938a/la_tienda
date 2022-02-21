@@ -82,11 +82,9 @@ class DetalleDescargaProducto(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
     presentacion=models.ForeignKey(Presentacion, on_delete=models.SET_NULL, null=True)
     cantidad_anterior=models.IntegerField(help_text="Ingrese la cantidad anterior del producto", null=True)
-    cantidad=models.IntegerField(help_text="Ingrese la cantidad del producto", null=True)
+    cantidad_descargada=models.IntegerField(help_text="Ingrese la cantidad del producto", null=True)
     nueva_cantidad=models.IntegerField(help_text="Ingrese la nueva cantidad", null=True)
-    costo_anterior=models.FloatField(help_text="Ingrese el costo anterior", null=True)
     costo=models.FloatField(help_text="Ingrese el costo del producto", null=True)
-    precio_anterior=models.FloatField(help_text="Ingrese el precio anterior", null=True)
     precio=models.FloatField(help_text="Ingrese el precio a como se va dar el producto en la venta", null=True)
     total=models.FloatField(help_text="", null=True)
 
