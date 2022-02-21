@@ -5,7 +5,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'store:list_carga_prod' %}">Listar Cargas de Inventario</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'store:list_descarga_prod' %}">Listar Cargas de Inventario</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -16,8 +16,8 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Cargas de Productos en Inventario</h5>
-              <a class="btn btn-primary pull-right" href="{% url 'store:add_carga_prod' %}">Agregar carga</a>
+              <h5 class="card-title">Descargas de Productos de inventario</h5>
+              <a class="btn btn-primary pull-right" href="{% url 'store:crear_descarga_prod' %}">Agregar descarga</a>
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -32,15 +32,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                    {% if cargas_prod %}
-                        {% for carga in cargas_prod %}
+                    {% if descarga_prod %}
+                        {% for descarga in descarga_prod %}
                             <tr>                    
                                 <th scope="row">{{ carga.id }}</th>
-                                <td>{{ carga.usuario }}</td>
-                                <td>{{ carga.fecha_carga }}</td>
-                                <td>{{ carga.descripcion }}</td>
-                                <td>{{ carga.sucursal }}</td>
-                                <td>{{ carga.total }}</td>
+                                <td>{{ descarga.usuario }}</td>
+                                <td>{{ descarga.fecha_descarga }}</td>
+                                <td>{{ descarga.descripcion }}</td>
+                                <td>{{ descarga.sucursal }}</td>
+                                <td>{{ descarga.total }}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,7 +48,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             {# <li><a class="dropdown-item" href="#">Detalle de Carga</a></li> #}
-                                            <li><a class="dropdown-item" href="{% url 'store:detalle_carga' carga.id %}">Detalle de venta</a></li>
+                                            <li><a class="dropdown-item" href="#">Detalle de venta</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -73,5 +73,5 @@
 {% load static %}
 
 {% block extra-script %}
-    <script src="{% static 'assets/js/proces_carga_inventario/listar_carga_productos.js' %}"></script>
+    <script src="{% static 'assets/js/proces_descarga_productos/listar_descarga_productos.js' %}"></script>
 {% endblock %}

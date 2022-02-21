@@ -51,6 +51,9 @@ class ListarInventario(ListView):
     model=ProductoStockSucursal
     context_object_name="inventario"
 
+    def get_queryset(self):
+        sucursal=self.request.user.sucursal
+        return self.model.objects.filter(sucursal=sucursal)
 
 def obtener_productos_autocomplete(request):
     clave=request.GET.get('term').strip()

@@ -119,24 +119,21 @@ def efectuar_venta(request):
             )
             #cuando la venta de un producto se efectua se debe de alterar el stock restandole la cantidad que se vende
             nueva_cantidad_disponible=int(producto_stock.cantidad)-int(cantidad)
-            costo_producto_stock=float(producto_stock.costo)
-            nuevo_total_inventario=nueva_cantidad_disponible*costo_producto_stock
             #teniendo la cantidad disponible se actualiza el producto_stock_ubicacion
             ProductoStockSucursal.objects.filter(id=id_prod_stock).update(
-                cantidad=nueva_cantidad_disponible,
-                total=nuevo_total_inventario
+                cantidad=nueva_cantidad_disponible
             )
             cuenta_prod=cuenta_prod+1
             if cuenta_prod==len(destalles_de_ventas):
                 res=True
-            datos=None
-            if res==True:#si se registran bien todos los detalles de facturas pasara a generarse el contenido del ticket
+    datos=None
+    if res==True:#si se registran bien todos los detalles de facturas pasara a generarse el contenido del ticket
                 ##obteniendo todos los datos registrados para devolverlos ya que con ellos se formara la factura o en este caso el ticket##
-                ticket=obtener_datos_factura(factura.id)
-                datos={
-                    'res':res,
-                    'datos_factura':ticket
-                }
+        ticket=obtener_datos_factura(factura.id)
+        datos={
+            'res':res,
+            'datos_factura':ticket
+        }
             
         
     return JsonResponse(datos, safe=False)

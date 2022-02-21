@@ -226,14 +226,20 @@ $(document).ready(function(){
 
     //calculando cambio
     $("#txt_efectivo").keyup(function(evt){
-        let total= parseFloat($("#total").text().replace("$", ""));
-        let efectivo= parseFloat($("#txt_efectivo").val().replace("$", ""));
+        let total=0;
+        let efectivo=0;
+        if($("#total").text().replace("$", "")!=''){
+            total=parseFloat($("#total").text().replace("$", ""));
+        }
+        if($("#txt_efectivo").val().replace("$", "")!=''){
+            efectivo=parseFloat($("#txt_efectivo").val().replace("$", ""));
+        }
         let cambio=efectivo-total;
         console.log("total "+total);
         console.log("efectivo "+efectivo);
         console.log("cambio "+cambio);
         
-        $("#txt_cambio").val("$"+cambio);
+        $("#txt_cambio").val("$"+redondear(cambio));
 
     })
     $("#txt_efectivo").keypress(function(evt){

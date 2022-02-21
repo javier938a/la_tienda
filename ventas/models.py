@@ -54,6 +54,7 @@ class Categoria(models.Model):
 
 class Producto(models.Model):
     proveedor=models.ForeignKey(Proveedor, help_text="Seleccione el proveedor", on_delete=models.SET_NULL, null=True)
+    codigo_producto=models.CharField(max_length=500, help_text="Codigo del producto", null=True)
     codigo_barra=models.CharField(max_length=100, help_text="Ingrese el codigo de barra del producto", null=True)
     nombre_producto=models.CharField(max_length=100, help_text="Ingrese el nombre del producto")
     descripcion=models.CharField(max_length=100, help_text="Ingrese la descripcion del producto")
