@@ -261,10 +261,17 @@
               </li>
 
               <li>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <i class="bi bi-box-arrow-right"></i>
-                  <span>Sign Out</span>
-                </a>
+                {% if user.is_authenticated %}
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'store:logout' %}">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Cerrar session</span>
+                  </a>
+                {% else %}
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'store:login' %}">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Iniciar session</span>
+                  </a>
+                {% endif %}
               </li>
 
             </ul><!-- End Profile Dropdown Items -->
@@ -281,105 +288,107 @@
   <!-- ======= Sidebar ======= -->
   {% block barra_lateral %}
     <aside id="sidebar" class="sidebar">
+      {% if user.is_authenticated %}
+        <ul class="sidebar-nav" id="sidebar-nav">
 
-      <ul class="sidebar-nav" id="sidebar-nav">
+          <li class="nav-item">
+            <a class="nav-link " href="{% url 'store:index' %}">
+              <i class="bi bi-grid"></i>
+              <span>Dashboard</span>
+            </a>
+          </li><!-- End Dashboard Nav -->
+          
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-journal-text"></i><span>Administrar Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:user' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Usuarios</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+            </ul>
+          </li><!-- End Forms Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#sucursal-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-journal-text"></i><span>Administrar Sucursales</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="sucursal-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_sucursal' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Sucursales</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+            </ul>
+          </li><!-- End Forms Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#cate-prod-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-journal-text"></i><span>Administrar Inventario</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="cate-prod-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_prod' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Productos</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_prove' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Proveedores</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_cate' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Categorias</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_pre' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Presentaciones</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_carga_prod' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Carga de Inventario</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_descarga_prod' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Descarga de Inventario</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_inv' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Inventario</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+            </ul>
+          </li><!-- End Forms Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#ventas-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-journal-text"></i><span>Administrar Ventas</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="ventas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'store:list_venta' %}">
+                  <i class="bi bi-card-list"></i>
+                  <span>Ventas</span>
+                </a>
+              </li><!-- End Register Page Nav -->
+            </ul>
+          </li><!-- End Forms Nav -->
 
-        <li class="nav-item">
-          <a class="nav-link " href="{% url 'store:index' %}">
-            <i class="bi bi-grid"></i>
-            <span>Dashboard</span>
-          </a>
-        </li><!-- End Dashboard Nav -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-journal-text"></i><span>Administrar Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:user' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Usuarios</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-          </ul>
-        </li><!-- End Forms Nav -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#sucursal-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-journal-text"></i><span>Administrar Sucursales</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="sucursal-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_sucursal' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Sucursales</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-          </ul>
-        </li><!-- End Forms Nav -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#cate-prod-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-journal-text"></i><span>Administrar Inventario</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="cate-prod-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_prod' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Productos</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_prove' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Proveedores</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_cate' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Categorias</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_pre' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Presentaciones</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_carga_prod' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Carga de Inventario</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_descarga_prod' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Descarga de Inventario</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_inv' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Inventario</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-          </ul>
-        </li><!-- End Forms Nav -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#ventas-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-journal-text"></i><span>Administrar Ventas</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="ventas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'store:list_venta' %}">
-                <i class="bi bi-card-list"></i>
-                <span>Ventas</span>
-              </a>
-            </li><!-- End Register Page Nav -->
-          </ul>
-        </li><!-- End Forms Nav -->
-
-      </ul>
+        </ul>
+      {% endif %}
 
     </aside><!-- End Sidebar-->
   {% endblock %}

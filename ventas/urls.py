@@ -1,6 +1,6 @@
-from unicodedata import name
 from django.urls import path
 from .views import Index
+from .views import iniciar_session, cerrar_session
 from .views import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario
 from .views import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
 from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
@@ -14,9 +14,12 @@ from .views import guardar_datos_inventario, actualizar_datos_inventario, update
 from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
 from .views import imprimir_ticket, Obtener_ticket
 
+
 app_name="store"
 urlpatterns = [
     path('', Index.as_view(), name="index"),
+    path('login/', iniciar_session, name="login"),
+    path('logout/', cerrar_session, name="logout"),
     path('usuarios/', ListarUsuarios.as_view(), name="user"),
     path('usuarios/crear_usuarios', CrearUsuario.as_view(), name="crear_user"),
     path('usuarios/editar_usuario/<int:pk>', EditarUsuario.as_view(), name="editar_user"),

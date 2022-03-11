@@ -6,6 +6,8 @@ from ventas.models import User
 from ventas.forms import UserForm
 from django.urls import reverse_lazy
 
+
+
 class CrearUsuario(CreateView):
     template_name="proces_usuario/crear_usuario.html"
     model=User
