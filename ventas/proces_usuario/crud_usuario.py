@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.views.generic import CreateView, ListView, DeleteView, DetailView, UpdateView
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -7,6 +8,10 @@ from ventas.forms import UserForm
 from django.urls import reverse_lazy
 
 
+class DetalleUsuario(DetailView):
+    model=User
+    template_name="proces_usuario/detalle_usuario.html"
+    context_object_name="usuario"
 
 class CrearUsuario(CreateView):
     template_name="proces_usuario/crear_usuario.html"
