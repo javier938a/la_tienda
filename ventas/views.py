@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from ventas.proces_login.op_login import iniciar_session, cerrar_session
 from ventas.proces_usuario.crud_usuario import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario, DetalleUsuario
+from ventas.proces_tipo_usuario.crud_tipo_usuario import ListarTipoUsuario, CrearTipoUsuario, EditarTipoUsuario, EliminarTipoUsuario
 from ventas.proces_proveedor.crud_proveedor import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
 from ventas.proces_sucursal.crud_sucursal import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
 from ventas.proces_categoria_producto.crud_categoria import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
@@ -12,7 +13,7 @@ from ventas.proces_carga_inventario.crud_carga_inventario import ListarCargaProd
 from ventas.proces_descarga_inventario.crud_descarga_inventario import ListarDescargasProductos, ViewCrearDescargaProducto, listar_productos_a_descargar_por_sucursal_autocomplete, agregar_producto_a_descargar_a_detalle, efectuar_descarga_de_productos
 from ventas.proces_inventario.crud_inventario import DetalleInventario, agregar_producto_detalle, guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle
 from ventas.proces_venta.crud_venta import ListarVentas, ViewCrearVenta, ViewDetalleVenta, imprimir_ticket, Obtener_ticket,verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
-
+from ventas.proces_reportes.reportes import  ViewSelectReporteVentas ,PrintViewReporteVentas
 # Create your views here.
 
 class Index(TemplateView):

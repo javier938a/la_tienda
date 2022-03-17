@@ -20,10 +20,16 @@ class Sucursal(models.Model):
 
     def __str__(self) -> str:
         return self.descripcion
+class TipoUsuario(models.Model):
+    tipo_usuario=models.CharField(max_length=50, help_text="Ingrese el tipo de Usuario")
+
+    def __str__(self):
+        return self.tipo_usuario
 
 class User(AbstractUser):
     objects=UserManager()
     sucursal=models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True)
+    tipo_usuario=models.ForeignKey(TipoUsuario, help_text="Ingrese el tipo de Usuario", on_delete=models.SET_NULL, null=True)
     fecha_nacimiento=models.DateField(null=True, blank=True, help_text="Ingrese la fecha de nacimiento")
     telefono=models.CharField(max_length=11, help_text="Ingrese su numero de telefono", null=True, blank=True)
     dui=models.CharField(max_length=10, help_text="Ingrese el numero de dui", null=True, blank=True)

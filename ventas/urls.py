@@ -1,7 +1,11 @@
+from unicodedata import name
 from django.urls import path
+
+
 from .views import Index
 from .views import iniciar_session, cerrar_session
 from .views import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario, DetalleUsuario
+from .views import ListarTipoUsuario, CrearTipoUsuario, EditarTipoUsuario, EliminarTipoUsuario
 from .views import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
 from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
@@ -13,6 +17,7 @@ from .views import ListarInventario, ViewCrearInventario, ViewEditarInventario, 
 from .views import guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle, DetalleInventario
 from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
 from .views import imprimir_ticket, Obtener_ticket
+from .views import ViewSelectReporteVentas, PrintViewReporteVentas
 
 
 app_name="store"
@@ -20,6 +25,10 @@ urlpatterns = [
     path('', Index.as_view(), name="index"),
     path('login/', iniciar_session, name="login"),
     path('logout/', cerrar_session, name="logout"),
+    path('tipo_usuario/', ListarTipoUsuario.as_view(), name="list_tipo_user"),
+    path('tipo_usuario/crear_tipo_usuario', CrearTipoUsuario.as_view(), name="crear_tipo_user"),
+    path('tipo_usuario/editar_tipo_usuario/<int:pk>', EditarTipoUsuario.as_view(), name="edit_tipo_user"),
+    path('tipo_usuario/eliminar_tipo_usuario/<int:pk>', EliminarTipoUsuario.as_view(), name="del_tipo_user"),
     path('usuarios/', ListarUsuarios.as_view(), name="user"),
     path('detalle_usuario/<int:pk>', DetalleUsuario.as_view(), name="detalle_user"),
     path('usuarios/crear_usuarios', CrearUsuario.as_view(), name="crear_user"),
@@ -74,5 +83,7 @@ urlpatterns = [
     path('ventas/efectuar_venta', efectuar_venta, name='efectuar_venta'),
     path('ventas/verificar_stock_producto', verificar_stock_producto, name="verificar_stock"),
     path('ventas/imprimir_ticket', imprimir_ticket, name="print_ticket"),
-    path('ventas/obtener_ticket', Obtener_ticket, name='get_ticket')
+    path('ventas/obtener_ticket', Obtener_ticket, name='get_ticket'),
+    path('reporte/select_reporte_ventas', ViewSelectReporteVentas.as_view(), name="reporte_venta_view"),
+    path('reporte/print_reporte_venta', PrintViewReporteVentas.as_view(), name="print_report_venta")
 ]

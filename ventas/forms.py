@@ -4,18 +4,27 @@ from pyexpat import model
 from django import forms
 from django.contrib.admin import widgets as wd
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Sucursal, Categoria, Producto, Presentacion, Proveedor
+from .models import User, Sucursal, Categoria, Producto, Presentacion, Proveedor, TipoUsuario
+
+class TipoUsuarioForm(forms.ModelForm):
+    class Meta:
+        model=TipoUsuario
+        fields=('tipo_usuario',)
+        labels={
+            'tipo_usuario':'Tipo de usuario',
+        }
 
 class UserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username','email', 'first_name','last_name','sucursal', 'fecha_nacimiento', 'telefono', 'dui', 'nit')
+        fields = ('username','email', 'first_name','last_name','sucursal', 'tipo_usuario','fecha_nacimiento', 'telefono', 'dui', 'nit')
         labels={
             'username':'Nombre de Usuario',
             'email':'Correo',
             'first_name':'Nombres',
             'last_name':'Apellidos',
             'sucursal':'Sucursal',
+            'tipo_usuario':'Tipo de Usuario',
             'fecha_nacimiento':'Fecha de Nacimiento',
             'telefono':'telefono',
             'dui':'DUI',
