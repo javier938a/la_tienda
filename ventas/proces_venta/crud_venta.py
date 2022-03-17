@@ -50,6 +50,40 @@ def obtener_productos_inventario_autocomplete(request):
 
     return JsonResponse(datos, safe=False)
 
+def agregar_producto_a_detalle_por_codigo(request):
+    codigo_barra=request.POST.get('codigo_barra')
+    sucursal=request.user.sucursal
+    producto_stockubi=ProductoStockSucursal.objects.filter(sucursal=sucursal).filter(producto__codigo_barra=codigo_barra)
+    res=False
+    datos={}
+    if producto_stockubi.exists():
+        producto_a_agregar=ProductoStockSucursal.objects.filter(sucursal=sucursal).get(producto__codigo_barra=codigo_barra)
+        existencia=producto_a_agregar.cantidad
+        if int(existencia)>0:
+            fila="<tr>"
+            fila+="<td><input class='form-control id_prod_stock' value='"+str(producto_a_agregar.id)+"' disabled></td>"
+            fila+="<td><input class='form-control' value='"+str(producto_a_agregar.producto)+"' disabled></td>"
+            fila+="<td><input class='form-control' value='"+str(producto_a_agregar.presentacion)+"' disabled></td>"
+            fila+="<td><input class='form-control cant' value='1'></td>"
+            fila+="<td><input class='form-control pre' value='$"+str(producto_a_agregar.precio)+"' disabled></td>"
+            fila+="<td><input class='form-control tot' value='$"+str(producto_a_agregar.precio)+"' disabled></td>"
+            fila+="<td><input class='btn btn-danger form-control delfila' type='button' value='Eliminar'></td>"
+            fila+="</tr>"
+            res=True
+            datos={
+                'res':res,
+                'id_prod_stock':str(producto_a_agregar.id),
+                'fila_producto':fila
+            }
+    else:
+        res=False
+        datos={
+            'res':res,
+            'mensaje':"El Producto no existe con el codigo de Barra proporcionado"
+        }
+    return JsonResponse(datos, safe=False)
+    
+
 def agregar_producto_detalle_venta(request):
     id_producto_stock_ubicacion=request.POST.get('id_prod_stock')
     producto_stock_ubi=ProductoStockSucursal.objects.get(id=id_producto_stock_ubicacion)

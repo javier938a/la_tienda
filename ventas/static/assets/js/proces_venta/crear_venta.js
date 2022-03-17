@@ -20,7 +20,57 @@ $(document).ready(function(){
     let url_inv_autocomplete=$("#url_productos_inv_autocomplete").val();
     const csrftoken=getCookie('csrftoken');
     let id_sucursal=$("#sucursal").val();
+    $("#tipo_busqueda").change(function(){
+        let num_tipo=$(this).val();
+        if(num_tipo==="1"){
+            $("#codigo_barra").css({
+                'display':'block',
+            });
+            $("#producto").css({
+                'display':'none',
+            })
+        }else if(num_tipo==="2"){
+            $("#producto").css({
+                'display':'block'
+            });
+            $("#codigo_barra").css({
+                'display':'none',
+            });
+        }
+    });
 
+    $("#codigo_barra").keypress(function(evt){
+        let codigo_barra=$("#codigo_barra").val();
+        let url_agregar_prod_barra=$("#url_agregar_prod_barra").val();
+        const csrftoken=getCookie("csrftoken");
+        $.ajax({
+            url:url_agregar_prod_barra,
+            type:"POST",
+            data:{
+                csrfmiddlewaretoken:csrftoken,
+                'codigo_barra':codigo_barra
+            },
+            dataType:'json',
+            success:function(data){
+              let res=data.res;
+              console.log(data);
+              if(res==true){
+                let fila_producto=data.fila_producto;
+                let id_prod_stock=data.id_prod_stock;
+     
+                console.log(fila_producto);
+                $("#table-productos-venta").prepend(fila_producto);//y se agrega la fila a la tabla
+                $("#codigo_barra").val("");
+                calcular_totales();
+
+              }else{
+                  //toastr['warning']("No existe el producto ó no este codigo de barra no se a asignado a un producto especifico.")
+                  $("#codigo_barra").val("");
+              }
+              
+            }
+        })
+    })
 
     $("#producto").autocomplete({
         source:function(request, response){
@@ -50,7 +100,7 @@ $(document).ready(function(){
                 agregar_producto_detalle_venta(id_prod_stock);//agregando el producto
             }else{//de lo contrario es por ya hay un producto del mismo agregado y manda un error
                 $("#producto").val("");//limpiando el campo de producto
-                toastr['error']("Este producto ya agregado en la venta, porfavor ingrese otro producto");
+                toastr['error']("Este producto ya esta agregado en la venta, porfavor ingrese otro producto");
                 
             }
             
