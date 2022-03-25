@@ -19,6 +19,7 @@ from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_sto
 from .views import agregar_producto_a_detalle_por_codigo
 from .views import imprimir_ticket, Obtener_ticket
 from .views import ViewSelectReporteVentas, PrintViewReporteVentas
+from .views import grafico_reporte_ventas
 
 
 app_name="store"
@@ -87,5 +88,6 @@ urlpatterns = [
     path('ventas/imprimir_ticket', imprimir_ticket, name="print_ticket"),
     path('ventas/obtener_ticket', Obtener_ticket, name='get_ticket'),
     path('reporte/select_reporte_ventas', ViewSelectReporteVentas.as_view(), name="reporte_venta_view"),
-    path('reporte/print_reporte_venta', PrintViewReporteVentas.as_view(), name="print_report_venta")
+    path('reporte/print_reporte_venta', PrintViewReporteVentas.as_view(), name="print_report_venta"),
+    path('reporte/grafico_reporte', grafico_reporte_ventas, name="url_grafico")
 ]

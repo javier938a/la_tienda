@@ -10,7 +10,7 @@
 {% block contenido %}
     <div class="container">
         <h4 class="h4">Rango de fecha del reporte</h4>
-        <form action="{% url 'store:print_report_venta' %}" method="GET">
+        <form id="frm_reporte_venta" target="_blank" action="{% url 'store:print_report_venta' %}" method="GET">
             {% csrf_token %}
             <div class="form-group">
                 <div class="row">

@@ -39,6 +39,27 @@ $(document).ready(function(){
         }
     });
 
+    $("#tipo_venta").change(function(){
+        let tipo_venta=$(this).val();
+        if(tipo_venta==="1"){
+            //alert("tipo_vente:"+tipo_venta);
+            $("#txt_efectivo_sin_ticket").css({
+                'display':'block',
+            });
+            $("#txt_efectivo").css({
+                'display':'none',
+            });
+        }else if(tipo_venta==="2"){
+            //alert("tipo_venta:"+tipo_venta);
+            $("#txt_efectivo_sin_ticket").css({
+                'display':'none',
+            });
+            $("#txt_efectivo").css({
+                'display':'block',
+            });
+        }
+    });
+
     $("#codigo_barra").keypress(function(evt){
         let codigo_barra=$("#codigo_barra").val();
         let url_agregar_prod_barra=$("#url_agregar_prod_barra").val();
@@ -258,8 +279,15 @@ $(document).ready(function(){
                         let resultado=data.res;
                         if(resultado){
                             ticket=JSON.stringify(data.datos_factura);//si el resultado es true entonces obtengo los datos de la factura y mandarla a imprimirla
-                            $("#efectuar_venta").prop('disabled', true);
-                            $("#txt_efectivo").prop('disabled', false);
+                            let tipo_venta=$("#tipo_venta").val();
+                            if(tipo_venta==="2"){
+                                $("#efectuar_venta").prop('disabled', true);
+                                $("#txt_efectivo").prop('disabled', false);
+                            }else if(tipo_venta==="1"){
+                                $("#efectuar_venta").prop('disabled', true);
+                                $("#txt_efectivo_sin_ticket").prop('disabled', false);
+                            }
+
                             ///aqui el codigo que imprimira el ticket e redireccionara al listado de ventas
                         }else{
                             toastr['error']("La Venta no pudo ser registrada exitosamente");
@@ -292,6 +320,35 @@ $(document).ready(function(){
         $("#txt_cambio").val("$"+redondear(cambio));
 
     })
+
+    $("#txt_efectivo_sin_ticket").keyup(function(evt){
+        let total=0;
+        let efectivo=0;
+        if($("#total").text().replace("$", "")!=''){
+            total=parseFloat($("#total").text().replace("$", ""));
+        }
+        if($("#txt_efectivo_sin_ticket").val().replace("$", "")!=''){
+            efectivo=parseFloat($("#txt_efectivo_sin_ticket").val().replace("$", ""));
+        }
+        let cambio=efectivo-total;
+        console.log("total "+total);
+        console.log("efectivo "+efectivo);
+        console.log("cambio "+cambio);
+        
+        $("#txt_cambio").val("$"+redondear(cambio));
+    });
+
+    $("#txt_efectivo_sin_ticket").keypress(function(evt){
+        let num_tecla_enter=evt.which;
+        if(num_tecla_enter===13){
+            toastr['success']("Venta registrada exitosamente");                          
+            setTimeout(function(){
+                window.location.href=$("#url_listar_ventas").val();
+            }, 1000) 
+        }
+ 
+    })
+
     $("#txt_efectivo").keypress(function(evt){
         console.log(evt.which)//la tecla enter es la numero 13 si da enter se imprime la factura
         console.log(ticket);

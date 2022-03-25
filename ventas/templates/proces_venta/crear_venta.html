@@ -60,7 +60,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-4 ">
+          <div class="col-md-4">
             <div class="form-group">
               <label for="">Tipo de busqueda</label>
               <select name="tipo_busqueda" id="tipo_busqueda" class="form-control">
@@ -68,6 +68,22 @@
                 <option value="2">Nombre del producto</option>
               </select>
             </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">Tipo de venta</label>
+              <select name="tipo_venta" id="tipo_venta" class="form-control">
+                <option value="1" selected>Sin ticket</option>
+                <option value="2">Con ticket</option>                
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+        </div>
+        <div class="row">
+          <div class="col-md-5">
             <div class="form-group">
               <label for="">Escriba un producto</label>
               <input class="form-control" type="text" name="producto" id="producto" placeholder="Escriba un producto" value="" style="display: none;">
@@ -81,8 +97,6 @@
               <input type="hidden" name="url_agregar_prod_barra" id="url_agregar_prod_barra" value="{% url 'store:add_prod_barra' %}">
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-md-9">
 
           </div>
@@ -146,7 +160,10 @@
                   </tr>
                   <tr>
                     <th scope="row" colspan="5" style="text-align:right;">Efectivo</th>
-                    <td><input class="form-control" type="text" name="txt_efectivo" id="txt_efectivo" value="" disabled></td>
+                    <td>
+                      <input class="form-control" type="text" name="txt_efectivo" id="txt_efectivo" value="" style="display: none;" disabled>
+                      <input class="form-control" type="text" name="txt_efectivo_sin_ticket" id="txt_efectivo_sin_ticket" value="" disabled>
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row" colspan="5" style="text-align:right;">cambio</th>
