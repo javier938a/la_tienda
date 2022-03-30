@@ -17,8 +17,9 @@ class TipoUsuarioForm(forms.ModelForm):
 class UserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username','email', 'first_name','last_name','sucursal', 'tipo_usuario','fecha_nacimiento', 'telefono', 'dui', 'nit')
+        fields = ('imagen_perfil','username','email', 'first_name','last_name','sucursal', 'tipo_usuario','fecha_nacimiento', 'telefono', 'dui', 'nit')
         labels={
+            'imagen_perfil':'Imagen de perfil',
             'username':'Nombre de Usuario',
             'email':'Correo',
             'first_name':'Nombres',
@@ -64,7 +65,7 @@ class CategoriaProductoForm(forms.ModelForm):
 class ProductoForm(forms.ModelForm):
     class Meta:
         model=Producto
-        fields=("proveedor","codigo_barra","nombre_producto", "descripcion","fecha_vencimiento", 'usuario', 'categoria')
+        fields=("proveedor","nombre_producto", "descripcion","fecha_vencimiento", 'usuario', 'categoria',"codigo_barra")
         labels={
             'proveedor':'proveedor',
             'codigo_barra':'Codigo de barra del producto',

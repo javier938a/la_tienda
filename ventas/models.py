@@ -1,10 +1,6 @@
-from itertools import product
-from operator import le, truediv
-from pyexpat import model
 from django.db import models
 
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.db.models.base import Model
 
 # Create your models here.
 
@@ -28,6 +24,7 @@ class TipoUsuario(models.Model):
 
 class User(AbstractUser):
     objects=UserManager()
+    imagen_perfil=models.ImageField(verbose_name="img_perfil", upload_to="logo_sucursal", null=True, blank=True)
     sucursal=models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True)
     tipo_usuario=models.ForeignKey(TipoUsuario, help_text="Ingrese el tipo de Usuario", on_delete=models.SET_NULL, null=True)
     fecha_nacimiento=models.DateField(null=True, blank=True, help_text="Ingrese la fecha de nacimiento")

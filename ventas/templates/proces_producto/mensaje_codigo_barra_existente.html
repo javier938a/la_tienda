@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+    <div class="pagetitle">
+      <h1>Crear Categoria</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'store:list_prod' %}">Listar Productos</a></li>
+          <li class="breadcrumb-item active">Producto con codigo de barra existente</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+
+              <!-- General Form Elements -->
+              <form method="POST">
+                    {% csrf_token %}
+                    <div class="alert alert-danger" role="alert">
+                        Ya Existe un producto con el codigo de barra, 
+                        que intenta ingresar, favor ingresar un codigo de barra diferente
+                        para el nuevo producto.
+                    </div>
+
+              </form><!-- End General Form Elements -->
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+{% endblock %}

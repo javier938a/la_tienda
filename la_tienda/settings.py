@@ -131,7 +131,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT= BASE_DIR / 'ventas/static'
 
-MEDIA_URL='media/'
+MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL='/'
