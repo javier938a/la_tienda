@@ -4,8 +4,8 @@ from django.views.generic import TemplateView
 from ventas.proces_login.op_login import iniciar_session, cerrar_session
 from ventas.proces_usuario.crud_usuario import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario, DetalleUsuario
 from ventas.proces_tipo_usuario.crud_tipo_usuario import ListarTipoUsuario, CrearTipoUsuario, EditarTipoUsuario, EliminarTipoUsuario
-from ventas.proces_proveedor.crud_proveedor import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
-from ventas.proces_sucursal.crud_sucursal import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
+from ventas.proces_proveedor.crud_proveedor import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor, DetalleProveedor
+from ventas.proces_sucursal.crud_sucursal import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal, DetalleSucursal
 from ventas.proces_categoria_producto.crud_categoria import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
 from ventas.proces_producto.crud_producto import ListarProductos, CrearProducto, EditarProducto, EliminarProducto, DetalleProducto
 from ventas.proces_presentacion.crud_presentacion import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion

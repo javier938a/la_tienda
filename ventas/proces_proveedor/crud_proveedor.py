@@ -1,3 +1,5 @@
+from pyexpat import model
+from re import template
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from ventas.forms import ProveedorForm
@@ -23,6 +25,11 @@ class EliminarProveedor(DeleteView):
     model=Proveedor
     context_object_name='proveedor'
     success_url=reverse_lazy('store:list_prove')
+
+class DetalleProveedor(DetailView):
+    template_name="proces_proveedor/detalle_proveedor.html"
+    model=Proveedor
+    context_object_name="prove"
 
 
 class ListarProveedor(ListView):

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+        <div class="pagetitle">
+            <h1>Lista de proveedores</h1>
+            <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:list_prove' %}">Listar proveedores</a></li>
+            </ol>
+            </nav>
+        </div><!-- End Page Title -->
+              <!-- Default Card -->
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Detalle de Proveedor</h5>
+                  {% if prove %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="4">Detalle de {{ prove.nombre }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>                            
+                            <td>Nombres:</td>
+                            <td>{{ prove.nombre }}</td>
+                        </tr>
+                        <tr>
+                            <td>Empresa</td>
+                            <td>{{ prove.empresa }}</td>
+                        </tr>
+
+                        <tr>                        
+                            <td>Direccion:</td>
+                            <td>{{ prove.direccion }}</td>
+                        </tr>
+                        <tr>
+                            <td>Celular:</td>
+                            <td>{{ prove.celular }}</td>
+                        </tr>
+                        <tr>
+                            <td>Telefono:</td>
+                            <td>{{ prove.celular }}</td>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    {% endif %}
+                    <div class="card-footer">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-success" href="{% url 'store:list_prove' %}">Atras</a>                        
+                        </div>                    
+                    </div>
+                </div>
+              </div><!-- End Default Card -->
+{% endblock %}

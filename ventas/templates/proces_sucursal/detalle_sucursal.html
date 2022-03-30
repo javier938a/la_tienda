@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+        <div class="pagetitle">
+            <h1>Lista de proveedores</h1>
+            <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store:index' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:list_sucursal' %}">Listar Sucursales</a></li>
+            </ol>
+            </nav>
+        </div><!-- End Page Title -->
+              <!-- Default Card -->
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Detalle de Sucursal</h5>
+                  {% if suc %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="4">Detalle de {{ suc.descripcion }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>                            
+                            <td>Descripcion:</td>
+                            <td>{{ suc.descripcion }}</td>
+                        </tr>
+                        <tr>
+                            <td>Direccion</td>
+                            <td>{{ suc.direccion }}</td>
+                        </tr>
+                        <tr>                        
+                            <td>Telefono:</td>
+                            <td>{{ suc.telefono }}</td>>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    {% endif %}
+                    <div class="card-footer">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-success" href="{% url 'store:list_sucursal' %}">Atras</a>                        
+                        </div>                    
+                    </div>
+                </div>
+              </div><!-- End Default Card -->
+{% endblock %}

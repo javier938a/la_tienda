@@ -48,8 +48,9 @@
                                           Action
                                       </button>
                                       <ul class="dropdown-menu">
-                                          <li><a class="dropdown-item" href="{% url 'store:edit_prove' prove.id %}">Editar</a></li>
-                                          <li><a class="dropdown-item" href="{% url 'store:del_prove' prove.id %}">Eliminar</a></li>
+                                          <li><a class="dropdown-item" href="{% url 'store:edit_prove' prove.id %}">Editar</a></li>                                          
+                                          <li><a class="dropdown-item" href="{% url 'store:del_prove' prove.id %}">Eliminar</a></li>  
+                                          <li><a class="dropdown-item" href="{% url 'store:detalle_prove' prove.id %}">Detalle de Proveedor</a></li>                                        
                                       </ul>
                                   </div>
                               </td>

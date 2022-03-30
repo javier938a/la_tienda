@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from ventas.models import Sucursal
 from ventas.forms import SucursalForm
@@ -20,6 +21,11 @@ class EliminarSucursal(DeleteView):
     model=Sucursal
     context_object_name='sucursal'
     success_url=reverse_lazy('store:list_sucursal')
+
+class DetalleSucursal(DetailView):
+    template_name="proces_sucursal/detalle_sucursal.html"
+    model=Sucursal
+    context_object_name="suc"
 
 class ListarSucursal(ListView):
     template_name="proces_sucursal/listar_sucursal.html"

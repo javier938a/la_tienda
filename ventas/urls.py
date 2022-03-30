@@ -4,8 +4,8 @@ from .views import Index
 from .views import iniciar_session, cerrar_session
 from .views import ListarUsuarios, CrearUsuario, EditarUsuario, EliminarUsuario, DetalleUsuario
 from .views import ListarTipoUsuario, CrearTipoUsuario, EditarTipoUsuario, EliminarTipoUsuario
-from .views import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
-from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
+from .views import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor, DetalleProveedor
+from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal, DetalleSucursal
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
 from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto, DetalleProducto
 from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
@@ -38,10 +38,12 @@ urlpatterns = [
     path('proveedores/crear_proveedor', CrearProveedor.as_view(), name="crear_prove"),
     path('proveedores/editar_proveedor/<int:pk>', EditarProveedor.as_view(), name="edit_prove"),
     path('proveedores/eliminar_proveedor/<int:pk>', EliminarProveedor.as_view(), name="del_prove"),
+    path('proveedores/detalle_proveedor/<int:pk>', DetalleProveedor.as_view(), name="detalle_prove"),
     path('sucursales/', ListarSucursal.as_view(), name="list_sucursal"),
     path('sucursales/crear_sucursal', CrearSucursal.as_view(), name="crear_sucursal"),
     path('sucursales/editar_sucursal/<int:pk>', EditarSucursal.as_view(), name="edit_sucursal"),
     path('sucursales/eliminar_sucursal/<int:pk>', EliminarSucursal.as_view(), name="del_sucursal"),
+    path('sucursales/detalle_sucursal/<int:pk>', DetalleSucursal.as_view(), name="detalle_sucursal"),
     path('categorias_producto/', ListarCategoriasProducto.as_view(), name="list_cate"),
     path('categorias_producto/crear_categoria_producto', CrearCategoriaProducto.as_view(), name="crear_cate"),
     path('categorias_producto/editar_categoria_producto/<int:pk>', EditarCategoriaProducto.as_view(), name="edit_cate"),
