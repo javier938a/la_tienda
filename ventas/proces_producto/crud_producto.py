@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.urls import reverse_lazy
 from ventas.models import Producto, User
 from ventas.forms import ProductoForm
@@ -33,6 +34,11 @@ class EliminarProducto(DeleteView):
     model=Producto
     context_object_name="prod"
     success_url=reverse_lazy("store:list_prod")
+
+class DetalleProducto(DetailView):
+    template_name="proces_producto/detalle_producto.html"
+    model=Producto
+    context_object_name="prod"
 
 class ListarProductos(ListView):
     template_name="proces_producto/listar_producto.html"

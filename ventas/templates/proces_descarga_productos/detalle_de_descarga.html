@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-2">
+
+            </div>
+            <div class="col-lg-8">
+    
+              <!-- Default Card -->
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Detalle de Descarga de producto</h5>
+                  {% if descarga_producto %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="4">Descarga realizada en la fecha {{ descarga_producto.fecha_descarga }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>                            
+                            <td>Usuario:</td>
+                            <td>{{ descarga_producto.usuario }}</td>
+                            <td>Descripcion de la Descarga:</td>
+                            <td>{{ descarga_producto.descripcion }}</td>
+                        </tr>
+                        <tr>                        
+                            <td>Sucursal:</td>
+                            <td>{{ descarga_producto.sucursal }}</td>
+                            <td>Fecha de venta:</td>
+                            <td>{{ descarga_producto.fecha_descarga }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+              </div><!-- End Default Card -->
+    
+              <!-- Card with header and footer -->
+              <div class="card">
+                <div class="card-header">Detalle</div>
+                <div class="card-body">
+                  <h5 class="card-title">Detalle</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Presentacion</th>
+                        <th scope="col">Cantidad Anterior</th>
+                        <th scope="col">Cantidad descargada</th>
+                        <th scope="col">Nueva Cantidad</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if detalle_descarga_producto %}
+                            {% for detalle_descarga in detalle_descarga_producto %}
+                                <tr>
+                                    <th scope="row">{{ detalle_descarga.id }}</th>
+                                    <td>{{ detalle_descarga.producto }}</td>
+                                    <td>{{ detalle_descarga.presentacion }}</td>
+                                    <td>{{ detalle_descarga.cantidad_anterior }}</td>
+                                    <td>{{ detalle_descarga.cantidad_descargada }}</td>
+                                    <td>{{ detalle_descarga.nueva_cantidad }}</td>
+                                    <td>{{ detalle_descarga.costo }}</td>
+                                    <td>{{ detalle_descarga.costo }}</td>
+                                    <td>{{ detalle_descarga.precio }}</td>
+                                    <td>{{ detalle_descarga.total }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                        <p>No hay productos registrados para este inventario</p>
+                      {% endif %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="row" colspan="9" style="text-align: right;">Total</th>
+                            <td id="total">{{ descarga_producto.total }}</td>
+                        </tr>
+                    </tfoot>
+                  </table>
+                  <!-- End Active Table -->
+                </div>
+                <div class="card-footer">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-success" href="{% url 'store:list_descarga_prod' %}">Salir</a>                        
+                    </div>                    
+                </div>
+              </div><!-- End Card with header and footer -->
+            </div>
+        </div>
+    
+    </div>
+    </section>
+
+
+{% endblock %}
+
+{% load  static %}
+{% block extra-script %}
+  
+    <script src="{% static 'assets/js/proces_venta/detalle_de_descarga.js' %}"></script>
+{% endblock %}

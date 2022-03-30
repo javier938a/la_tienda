@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  {% if prod %}
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Acerca de {{ prod.nombre_producto }}</button>
+                  {% endif %}
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">Detalle de Producto</h5>
+                  <p class="small fst-italic"></p>
+
+                  <h5 class="card-title">Detalle</h5>
+                  
+                  {% if prod %}
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Nombre de producto</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.nombre_producto }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Codigo de Producto</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.codigo_producto }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Codigo de Barra</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.codigo_barra }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Proveedor</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.proveedor }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Descripcion del producto</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.descripcion }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Fecha de Vencimiento</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.fecha_vencimiento }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Usuario que Registro el producto:</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.usuario }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Categoria:</div>
+                        <div class="col-lg-9 col-md-8">{{ prod.categoria}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="position-relative">
+                        <div class="position-absolute top-0 end-0">
+                          <a href="{% url 'store:list_prod' %}" class="btn btn-primary">Atras</a>
+                        </div>   
+                        <br>                     
+                      </div>
+                    </div>     
+                  {% else %}
+                    <p class="warning">No Hay informacion registrada de este producto</p>
+                  {% endif %}              
+
+                </div>
+
+
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+    </div>
+{% endblock %}

@@ -1,8 +1,8 @@
 from itertools import product
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 from ventas.models import CargaProductos, ProductoStockSucursal
 from ventas.models import DescargaProductos, DetalleDescargaProducto
-from django.db.models import Q
+from django.db.models import Q, aggregates
 from django.http import JsonResponse
 import json
 
@@ -33,6 +33,18 @@ def listar_productos_a_descargar_por_sucursal_autocomplete(request):
             datos.append(fila)
     
     return JsonResponse(datos, safe=False)
+
+class DetalleDescargaDeProducto(DetailView):
+    template_name="proces_descarga_productos/detalle_de_descarga.html"
+    model=DescargaProductos
+    context_object_name="descarga_producto"
+
+    def get_context_data(self, **kwargs):
+        context=super(DetalleDescargaDeProducto, self).get_context_data(**kwargs)   
+        detalle_descarga_producto=DetalleDescargaProducto.objects.all()
+
+        context['detalle_descarga_producto']=detalle_descarga_producto
+        return context     
 
 
 def agregar_producto_a_descargar_a_detalle(request):

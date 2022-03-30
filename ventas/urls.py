@@ -1,6 +1,4 @@
-from unicodedata import name
 from django.urls import path
-
 
 from .views import Index
 from .views import iniciar_session, cerrar_session
@@ -9,10 +7,10 @@ from .views import ListarTipoUsuario, CrearTipoUsuario, EditarTipoUsuario, Elimi
 from .views import ListarProveedor, CrearProveedor, EditarProveedor, EliminarProveedor
 from .views import ListarSucursal, CrearSucursal, EditarSucursal, EliminarSucursal
 from .views import ListarCategoriasProducto, CrearCategoriaProducto, EditarCategoriaProducto, EliminarCategoriaProducto
-from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto
+from .views import ListarProductos, CrearProducto, EditarProducto, EliminarProducto, DetalleProducto
 from .views import ListarPresentacion, CrearPresentacion, EditarPresentacion, EliminarPresentacion
 from .views import ListarCargaProductos, ViewCargaInventario, DetalleCargaInventario, listar_productos_cargados_y_sin_cargar_autocomplete, agregar_producto_detalle_carga, cargar_producto_inventario
-from .views import ListarDescargasProductos, ViewCrearDescargaProducto, listar_productos_a_descargar_por_sucursal_autocomplete, agregar_producto_a_descargar_a_detalle, efectuar_descarga_de_productos
+from .views import ListarDescargasProductos, ViewCrearDescargaProducto, DetalleDescargaDeProducto,listar_productos_a_descargar_por_sucursal_autocomplete, agregar_producto_a_descargar_a_detalle, efectuar_descarga_de_productos
 from .views import ListarInventario, ViewCrearInventario, ViewEditarInventario, EliminarInventario, obtener_productos_autocomplete, agregar_producto_detalle
 from .views import guardar_datos_inventario, actualizar_datos_inventario, update_producto_detalle, DetalleInventario
 from .views import ListarVentas, ViewCrearVenta, ViewDetalleVenta, verificar_stock_producto, obtener_productos_inventario_autocomplete, agregar_producto_detalle_venta, efectuar_venta
@@ -52,6 +50,7 @@ urlpatterns = [
     path('productos/crear_producto', CrearProducto.as_view(), name="crear_prod"),
     path('productos/editar_producto/<int:pk>', EditarProducto.as_view(), name="editar_prod"),
     path('productos/eliminar_producto/<int:pk>', EliminarProducto.as_view(), name="del_prod"),
+    path('productos/detalle_producto/<int:pk>', DetalleProducto.as_view(), name="detalle_prod"),
     path('presentaciones/', ListarPresentacion.as_view(), name="list_pre"),
     path('presentaciones/crear_presentacion', CrearPresentacion.as_view(), name="crear_pre"),
     path('presentaciones/editar_presentacion/<int:pk>', EditarPresentacion.as_view(), name="edit_pre"),
@@ -66,6 +65,7 @@ urlpatterns = [
     path('list_descarga_productos_autocomplete', listar_productos_a_descargar_por_sucursal_autocomplete, name="list_prod_a_descargar"),
     path('descarga_producto/agregar_producto_a_descargar_a_detalle', agregar_producto_a_descargar_a_detalle, name='add_prod_a_descarga'),
     path('descarga_producto/efectuar_descarga', efectuar_descarga_de_productos, name='efectuar_descarga_prod'),
+    path('descarga_producto/detalle_de_descarga_producto/<int:pk>', DetalleDescargaDeProducto.as_view(), name="detalle_descarga"),
     path('carga/cargar_producto_inventario', cargar_producto_inventario, name='cargar_prod_inv'),
     path('inventario/', ListarInventario.as_view(), name="list_inv"),
     path('inventario/crear_inventario', ViewCrearInventario.as_view(), name="crear_inv"),
